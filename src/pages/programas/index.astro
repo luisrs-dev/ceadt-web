@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Container from '../../components/ui/Container.astro';
+import Button from '../../components/ui/Button.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import ProgramCard from '../../components/programs/ProgramCard.astro';
+import ProgramContact from '../../components/programs/ProgramContact.astro';
+import { programs } from '../../data/programs';
+const description = 'Conoce los programas residenciales de CEADT y encuentra información para solicitar orientación.';
+---
+<BaseLayout title="Programas" description={description}>
+  <Fragment slot="head">
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:site_name" content="CEADT" />
+    <meta property="og:title" content="Nuestros programas | CEADT" />
+    <meta property="og:description" content={description} />
+  </Fragment>
+  <Header slot="header" />
+  <PageHeader title="Nuestros programas" description={description} breadcrumbs={[{ label: 'Inicio', href: '/' }, { label: 'Programas' }]} />
+  <section aria-labelledby="program-list-title" class="py-16 sm:py-20 lg:py-24">
+    <Container>
+      <SectionHeading id="program-list-title" eyebrow="Atención especializada" size="editorial" title="Acompañamiento en tratamiento de adicciones" description="CEADT acompaña procesos de rehabilitación y reinserción social en la Región del Maule. Conoce sus programas residenciales para hombres y mujeres." />
+      <div class="mt-12 grid gap-8 md:grid-cols-2">{programs.map((program) => <ProgramCard program={program} />)}</div>
+    </Container>
+  </section>
+  <section id="orientacion" aria-labelledby="access-title" class="bg-background-alt py-16 sm:py-20 lg:py-24">
+    <Container>
+      <SectionHeading id="access-title" eyebrow="Ingreso y derivación" size="editorial" title="¿Cómo acceder a nuestros programas?" description="Comunícate con CEADT Hombres o CEADT Mujeres para consultar los procedimientos de ingreso y derivación." />
+      <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+        {programs.map((program) => <Button href={`/programas/${program.slug}#orientacion`} variant="outline">Orientación · {program.audience}</Button>)}
+        <Button href="#contactos">Ver contactos</Button>
+      </div>
+    </Container>
+  </section>
+  <section id="contactos" aria-labelledby="contact-title" class="py-16 sm:py-20 lg:py-24">
+    <Container>
+      <SectionHeading id="contact-title" eyebrow="Conversemos" size="editorial" title="¿Necesitas orientación?" description="Elige el centro correspondiente y comunícate por teléfono o correo para realizar tu consulta." />
+      <div class="mt-12 grid gap-8 md:grid-cols-2">{programs.map((program) => <ProgramContact contact={program.contact} level="h3" />)}</div>
+    </Container>
+  </section>
+  <Footer slot="footer" />
+</BaseLayout>

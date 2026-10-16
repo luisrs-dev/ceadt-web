@@ -1,0 +1,16 @@
+---
+import { Image } from 'astro:assets';
+import { formatNewsDate, type NewsArticle } from '../../data/news';
+interface Props { article: NewsArticle; }
+const { article } = Astro.props;
+const href = `/noticias/${article.slug}`;
+---
+<article class="flex flex-col overflow-hidden rounded-card border border-border bg-surface shadow-card">
+  <Image src={article.image} alt={article.imageAlt} widths={[320, 400]} sizes="(min-width: 768px) 360px, 100vw" format="webp" loading="lazy" class="aspect-[8/5] w-full object-cover" />
+  <div class="flex grow flex-col items-start p-6 sm:p-8">
+    <time datetime={article.publishedAt} class="text-sm text-muted">{formatNewsDate(article.publishedAt)}</time>
+    <h2 class="mt-4 text-xl font-semibold leading-snug"><a href={href} class="hover:text-primary hover:underline underline-offset-4">{article.title}</a></h2>
+    <p class="mt-4 grow leading-relaxed text-muted">{article.summary}</p>
+    <a href={href} class="mt-6 inline-flex min-h-11 items-center gap-2 font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">Leer noticia<span aria-hidden="true">→</span><span class="sr-only">: {article.title}</span></a>
+  </div>
+</article>

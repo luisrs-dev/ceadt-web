@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Container from '../../components/ui/Container.astro';
+import BiopsychosocialQuestionnaire from '../../components/tests/BiopsychosocialQuestionnaire.astro';
+const title = 'Test Grado de Compromiso Biopsicosocial';
+const description = 'Cuestionario de 15 preguntas de CEADT sobre compromiso biopsicosocial, con selección y revisión local de respuestas.';
+---
+<BaseLayout title={title} description={description}>
+  <Fragment slot="head"><meta property="og:title" content={`${title} | CEADT`} /><meta property="og:description" content={description} /><meta property="og:type" content="website" /></Fragment>
+  <Header slot="header" />
+  <PageHeader title={title} description="Selecciona una alternativa por pregunta y revisa tus respuestas al finalizar." breadcrumbs={[{ label: 'Inicio', href: '/' }, { label: 'Tests', href: '/tests' }, { label: 'Compromiso Biopsicosocial' }]} />
+  <section aria-label="Cuestionario de compromiso biopsicosocial" class="py-12 sm:py-16 lg:py-20"><Container width="reading"><BiopsychosocialQuestionnaire /></Container></section>
+  <Footer slot="footer" />
+</BaseLayout>

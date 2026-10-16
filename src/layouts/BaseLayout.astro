@@ -1,0 +1,38 @@
+---
+import BackToTop from '../components/layout/BackToTop.astro';
+import OrientationContact from '../components/layout/OrientationContact.astro';
+import { site } from '../config/site';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const hasHeader = Astro.slots.has('header');
+---
+
+<!doctype html>
+<html lang={site.language}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} | {site.name}</title>
+    <slot name="head" />
+  </head>
+  <body id="page-top" class="min-h-screen bg-background font-sans text-foreground">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-control focus:bg-surface focus:px-4 focus:py-2 focus:text-primary">
+      Saltar al contenido
+    </a>
+    <slot name="header" />
+    <main id="main-content" tabindex="-1">
+      <slot />
+    </main>
+    <slot name="footer" />
+    {hasHeader && <BackToTop />}
+    {hasHeader && <OrientationContact />}
+  </body>
+</html>

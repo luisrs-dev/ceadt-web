@@ -1,0 +1,44 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Container from '../components/ui/Container.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import Button from '../components/ui/Button.astro';
+import { agreements } from '../data/agreements';
+const description = 'Conoce las colaboraciones institucionales de CEADT en salud, formación, apoyo comunitario y gestión.';
+---
+<BaseLayout title="Convenios" description={description}>
+  <Fragment slot="head"><meta property="og:title" content="Convenios y colaboraciones | CEADT" /><meta property="og:description" content={description} /><meta property="og:type" content="website" /><meta property="og:locale" content="es_CL" /></Fragment>
+  <Header slot="header" />
+  <PageHeader title="Convenios y colaboraciones" description="Vínculos con instituciones que han contribuido a la atención, la formación y el trabajo de CEADT." breadcrumbs={[{ label: 'Inicio', href: '/' }, { label: 'Convenios' }]} />
+  <section aria-labelledby="agreements-title" class="py-16 sm:py-20 lg:py-24">
+    <Container>
+      <SectionHeading id="agreements-title" eyebrow="Colaboración institucional" size="editorial" title="Un trabajo que se construye en conjunto" description="Conoce el propósito de cada colaboración. Para consultar su alcance y las condiciones actuales, comunícate con CEADT." />
+      <nav aria-label="Ir a una institución" class="mt-8 border-y border-border py-4">
+        <ul class="flex flex-wrap gap-x-6 gap-y-2">{agreements.map((agreement) => <li><a href={`#${agreement.id}`} class="inline-block py-2 text-sm font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{agreement.name}</a></li>)}</ul>
+      </nav>
+      <div class="mt-10 grid gap-6 md:grid-cols-2 lg:gap-8">
+        {agreements.map((agreement) => <article id={agreement.id} aria-labelledby={`${agreement.id}-title`} class="flex min-w-0 scroll-mt-6 flex-col items-start rounded-card border border-border bg-surface p-6 sm:p-8">
+          <div class="mb-6 flex h-48 w-full items-center justify-center border-b border-border bg-white pb-6 sm:h-56">
+            <Image src={agreement.logo} alt={`Logo de ${agreement.name}`} widths={[240, 480]} sizes="(min-width: 640px) 224px, 192px" format="webp" loading="lazy" class="h-full w-full max-w-80 object-contain" />
+          </div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-secondary">{agreement.category}</p>
+          <h3 id={`${agreement.id}-title`} class="mt-4 text-2xl font-semibold leading-snug text-foreground">{agreement.name}</h3>
+          <p class="mt-4 font-medium text-primary">{agreement.purpose}</p>
+          <p class="mt-4 grow leading-relaxed text-muted">{agreement.description}</p>
+          {agreement.website && <a href={agreement.website.href} class="mt-6 inline-flex min-h-11 items-center gap-2 py-2 font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{agreement.website.label}<span aria-hidden="true">↗</span><span class="sr-only"> (sitio externo)</span></a>}
+        </article>)}
+      </div>
+    </Container>
+  </section>
+  <section aria-labelledby="agreement-contact-title" class="border-t border-border bg-background-alt py-16 sm:py-20 lg:py-24">
+    <Container class="grid items-center gap-8 lg:grid-cols-[1.3fr_0.7fr]">
+      <SectionHeading id="agreement-contact-title" eyebrow="Conversemos" title="¿Buscas información sobre un convenio?" description="Contacta a CEADT para consultar por sus condiciones o presentar una propuesta de colaboración institucional." />
+      <div class="flex flex-col gap-4 sm:flex-row sm:flex-wrap"><Button href="/#contacto">Contactar a CEADT</Button><Button href="/programas" variant="outline">Ver programas</Button></div>
+    </Container>
+  </section>
+  <Footer slot="footer" />
+</BaseLayout>

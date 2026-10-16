@@ -1,0 +1,7 @@
+---
+import ProgramDetail from '../../components/programs/ProgramDetail.astro';
+import { programs } from '../../data/programs';
+const program = programs.find((item) => item.slug === 'hombres');
+if (!program) throw new Error('Falta el programa hombres');
+---
+<ProgramDetail program={program} />

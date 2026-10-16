@@ -1,0 +1,15 @@
+---
+import Button from '../ui/Button.astro';
+import type { Contact } from '../../data/contact';
+interface Props { contact: Contact; level?: 'h2' | 'h3'; }
+const { contact, level: Heading = 'h2' } = Astro.props;
+---
+<article id={`contacto-${contact.id}`} class="min-w-0 rounded-card border border-border bg-surface p-6 sm:p-8">
+  <Heading class="text-2xl font-semibold leading-snug">{contact.name}</Heading>
+  <p class="mt-5 text-sm font-medium text-muted">Teléfonos de contacto</p>
+  <div class="mt-3 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+    {contact.phones.map((phone) => <Button href={phone.href} aria-label={`Llamar a ${contact.name} al ${phone.label}`}>{phone.label}</Button>)}
+  </div>
+  <p class="mt-6 text-sm font-medium text-muted">Correo electrónico</p>
+  <a href={`mailto:${contact.email}`} class="mt-2 inline-block max-w-full break-all py-2 font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{contact.email}</a>
+</article>

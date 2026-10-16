@@ -1,0 +1,23 @@
+/* Azul tomado del logo CEADT; verdes moderados para una identidad más serena. */
+@theme {
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --color-background: #ffffff;
+  --color-background-alt: #f4f8fa;
+  --color-surface: #ffffff;
+  --color-foreground: #243746;
+  --color-muted: #526675;
+  --color-primary: #0c5c99;
+  --color-primary-hover: #094a7b;
+  --color-on-primary: #ffffff;
+  --color-secondary: #287a46;
+  --color-secondary-hover: #206338;
+  --color-on-secondary: #ffffff;
+  --color-accent: #72b984;
+  --color-border: #d5e1e7;
+  --color-focus: #0c5c99;
+  --radius-control: 0.5rem;
+  --radius-card: 1rem;
+  --shadow-card: 0 2px 12px rgb(36 55 70 / 0.06);
+  --container-content: 72rem;
+  --container-reading: 42rem;
+}

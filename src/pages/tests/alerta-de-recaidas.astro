@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Container from '../../components/ui/Container.astro';
+import Questionnaire from '../../components/tests/Questionnaire.astro';
+import { relapseQuestions } from '../../data/relapse-alert-test';
+---
+<BaseLayout title="Test Alerta de Recaídas" description="Cuestionario de Alerta de Recaídas de CEADT con siete alternativas de frecuencia por enunciado.">
+  <Fragment slot="head"><meta property="og:title" content="Test Alerta de Recaídas | CEADT" /><meta property="og:type" content="website" /></Fragment>
+  <Header slot="header" />
+  <PageHeader title="Test Alerta de Recaídas" description="Lee cada afirmación y selecciona con qué frecuencia ha sido verdadera para ti recientemente." breadcrumbs={[{ label: 'Inicio', href: '/' }, { label: 'Tests', href: '/tests' }, { label: 'Alerta de Recaídas' }]} />
+  <Container width="reading" class="py-12 sm:py-16 lg:py-20">
+    <Questionnaire questions={relapseQuestions} compactScale scoreLabel="Suma directa de respuestas" instructions="Selecciona una alternativa por afirmación, desde Nunca hasta Siempre, según tu experiencia reciente." scoringDescription="La escala va de Nunca (1 punto) a Siempre (7 puntos). Se muestra la suma directa de las respuestas, sin invertir enunciados ni asignar niveles de riesgo." />
+  </Container>
+  <Footer slot="footer" />
+</BaseLayout>

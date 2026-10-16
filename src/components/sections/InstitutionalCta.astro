@@ -1,0 +1,26 @@
+---
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+interface Props {
+  id?: string;
+  title?: string;
+  description?: string;
+}
+const {
+  id = 'institutional-cta-title',
+  title = 'Estamos aquí para orientarte',
+  description = 'Conoce nuestros programas y encuentra los canales de contacto de CEADT Hombres y CEADT Mujeres.',
+} = Astro.props;
+---
+<section aria-labelledby={id} class="bg-background-alt py-16 sm:py-20 lg:py-24">
+  <Container>
+    <div class="rounded-card border border-border bg-surface p-6 sm:p-10 lg:p-12">
+      <SectionHeading id={id} eyebrow="Conversemos" size="editorial" title={title} description={description} />
+      <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+        <Button href="/programas">Ver programas <span aria-hidden="true">↗</span></Button>
+        <Button href="/#contacto" variant="outline">Contactar al centro</Button>
+      </div>
+    </div>
+  </Container>
+</section>

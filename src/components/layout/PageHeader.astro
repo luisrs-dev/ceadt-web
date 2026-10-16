@@ -1,0 +1,26 @@
+---
+import Container from '../ui/Container.astro';
+interface BreadcrumbItem { label: string; href?: string; }
+interface Props {
+  title: string;
+  description: string;
+  breadcrumbs: BreadcrumbItem[];
+}
+const { title, description, breadcrumbs } = Astro.props;
+---
+<section aria-labelledby="page-title" class="border-b border-border bg-background-alt py-10 sm:py-14 lg:py-16">
+  <Container>
+    <nav aria-label="Ruta de navegación" class="mb-8">
+      <ol class="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted">
+        {breadcrumbs.map((item, index) => <li class="flex items-center gap-3">
+          {index > 0 && <span aria-hidden="true" class="text-muted">/</span>}
+          {index === breadcrumbs.length - 1
+            ? <span aria-current="page" class="font-semibold text-foreground">{item.label}</span>
+            : <a href={item.href} class="inline-block py-2 underline underline-offset-4 hover:text-primary">{item.label}</a>}
+        </li>)}
+      </ol>
+    </nav>
+    <h1 id="page-title" class="max-w-reading text-4xl font-semibold leading-tight tracking-tight text-balance sm:text-5xl lg:text-6xl">{title}</h1>
+    <p class="mt-6 max-w-reading text-lg leading-relaxed text-muted">{description}</p>
+  </Container>
+</section>

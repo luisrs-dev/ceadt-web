@@ -1,0 +1,26 @@
+---
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Button from '../ui/Button.astro';
+const questions = [
+  { question: '¿Cómo puedo contactar al centro?', answer: 'Puedes llamar o escribir al correo de CEADT Hombres o CEADT Mujeres. Encontrarás ambos canales en la sección de contacto.' },
+  { question: '¿Dónde puedo consultar sobre un programa residencial?', answer: 'Dirige tu consulta al contacto de CEADT Hombres o CEADT Mujeres, según el programa sobre el que deseas información.' },
+  { question: '¿Dónde puedo obtener información sobre los tests y recursos?', answer: 'Contacta al centro para consultar sobre Compromiso Biopsicosocial, Alerta de Recaídas o Test de Seguimiento.' },
+];
+---
+<section id="preguntas" aria-labelledby="faq-title" class="bg-background-alt py-16 sm:py-20 lg:py-28">
+  <Container class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+    <div>
+      <SectionHeading id="faq-title" eyebrow="Preguntas frecuentes" size="editorial" title="Un lugar para tus preguntas" description="Encuentra los canales para realizar tu consulta al centro." />
+      <Button href="#contacto" variant="outline" class="mt-8">Conversemos <span aria-hidden="true">↗</span></Button>
+    </div>
+    <div class="border-t border-border">
+      {questions.map(({ question, answer }) => <details class="group border-b border-border">
+        <summary class="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-6 font-semibold leading-relaxed text-foreground hover:text-primary">
+          {question}<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="size-5 shrink-0 text-primary group-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <p class="max-w-reading pb-6 leading-relaxed text-muted">{answer}</p>
+      </details>)}
+    </div>
+  </Container>
+</section>

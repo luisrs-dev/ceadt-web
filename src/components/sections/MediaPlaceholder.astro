@@ -1,0 +1,11 @@
+---
+interface Props { label: string; class?: string; }
+const { label, class: className } = Astro.props;
+---
+<div class:list={['flex min-h-64 items-center justify-center rounded-card border border-dashed border-primary/40 bg-background-alt p-8', className]}>
+  <div class="max-w-xs text-center">
+    <svg aria-hidden="true" viewBox="0 0 48 48" fill="none" class="mx-auto mb-4 size-12 text-primary" stroke="currentColor" stroke-width="1.5"><rect x="7" y="9" width="34" height="30" rx="4"/><circle cx="17" cy="19" r="3"/><path d="m9 34 10-10 7 7 5-5 8 8"/></svg>
+    <p class="font-semibold text-primary">{label}</p>
+    <p class="mt-2 text-sm text-muted">Espacio reservado para fotografía original de CEADT. Recurso pendiente.</p>
+  </div>
+</div>

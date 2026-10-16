@@ -1,0 +1,18 @@
+---
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { Image } from 'astro:assets';
+import homeImage from '../../assets/home.jpg';
+---
+<section id="nosotros" aria-labelledby="about-title" class="py-16 sm:py-20 lg:py-28">
+  <Container class="grid items-center gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
+    <Image src={homeImage} alt="Vista del patio de las instalaciones de CEADT." widths={[480, 768, 1024]} sizes="(min-width: 1152px) 512px, (min-width: 1024px) 45vw, 92vw" format="webp" loading="lazy" class="aspect-[5/4] sm:aspect-[5/4] w-full rounded-card object-cover" />
+    <div>
+      <SectionHeading size="editorial" id="about-title" eyebrow="Quiénes somos" title="Acompañamiento desde la Región del Maule" description="Centro Especialista en Tratamiento de Adicciones." />
+      <p class="mt-6 text-lg leading-relaxed text-muted">En CEADT acompañamos procesos de rehabilitación y reinserción social en la Región del Maule.</p>
+      <p class="mt-4 text-lg leading-relaxed text-muted">Conoce nuestros programas residenciales y los canales de contacto del centro.</p>
+      <Button href="/nosotros" variant="outline" class="mt-8">Conoce más sobre CEADT</Button>
+    </div>
+  </Container>
+</section>

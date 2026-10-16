@@ -1,0 +1,41 @@
+---
+import { publicNavigation, isNavigationActive } from '../../data/navigation';
+interface Props { currentPath: string; }
+const { currentPath } = Astro.props;
+---
+<details id="mobile-menu" class="group xl:hidden">
+  <summary aria-controls="mobile-navigation" class="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-control border border-on-primary/60 px-4 py-2 text-on-primary hover:bg-primary-hover focus-visible:outline-on-primary">
+    <span>Menú</span><span aria-hidden="true" class="group-open:rotate-180">⌄</span>
+  </summary>
+  <nav id="mobile-navigation" aria-label="Navegación móvil" class="absolute inset-x-0 top-full max-h-[calc(100svh-var(--site-header-height,6rem))] overflow-y-auto border-t border-on-primary/20 bg-primary p-4 shadow-card">
+    <ul class="mx-auto grid max-w-content gap-1 sm:grid-cols-2">
+      {publicNavigation.map((item) => <li><a href={item.href} aria-current={isNavigationActive(currentPath, item.href) ? 'page' : undefined} class:list={['flex min-h-11 items-center justify-between gap-3 rounded-control px-4 py-3 text-on-primary hover:bg-primary-hover focus-visible:outline-on-primary', { 'bg-primary-hover font-semibold underline decoration-accent decoration-2 underline-offset-8': isNavigationActive(currentPath, item.href) }]}>{item.label}</a></li>)}
+    </ul>
+  </nav>
+</details>
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>('#mobile-menu');
+  const trigger = menu?.querySelector('summary');
+  if (menu && trigger) {
+    trigger.setAttribute('aria-expanded', String(menu.open));
+    menu.addEventListener('toggle', () => trigger.setAttribute('aria-expanded', String(menu.open)));
+    menu.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menu.open) {
+        menu.open = false;
+        trigger.focus();
+      }
+    });
+    menu.querySelectorAll<HTMLAnchorElement>('a').forEach((link) => link.addEventListener('click', () => {
+      menu.open = false;
+      const isCurrentPage = link.pathname.replace(/\/$/, '') === window.location.pathname.replace(/\/$/, '');
+      const target = isCurrentPage && link.hash ? document.getElementById(link.hash.slice(1)) : null;
+      if (target) {
+        target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+      }
+    }));
+    window.matchMedia('(min-width: 80rem)').addEventListener('change', (event) => {
+      if (event.matches) menu.open = false;
+    });
+  }
+</script>

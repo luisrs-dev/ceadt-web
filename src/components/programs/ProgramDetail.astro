@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../layout/Header.astro';
+import Footer from '../layout/Footer.astro';
+import PageHeader from '../layout/PageHeader.astro';
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import ProgramNavigation from './ProgramNavigation.astro';
+import ProgramGuidance from './ProgramGuidance.astro';
+import ProgramContact from './ProgramContact.astro';
+import type { Program } from '../../data/programs';
+interface Props { program: Program; }
+const { program } = Astro.props;
+const contactHref = `#contacto-${program.slug}`;
+const sections = [
+  { id: 'sobre-el-programa', label: 'Sobre el programa' },
+  ...(program.overview ? [{ id: 'etapas', label: 'Etapas' }, { id: 'actividades', label: 'Actividades' }] : []),
+  { id: 'como-ingresar', label: 'Cómo ingresar' },
+  { id: 'como-derivar', label: 'Cómo derivar' },
+  { id: `contacto-${program.slug}`, label: 'Contacto' },
+];
+const description = `Conoce el ${program.title} de CEADT y sus canales de contacto para consultar sobre ingreso y derivación.`;
+---
+<BaseLayout title={program.title} description={description}>
+  <Fragment slot="head">
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:site_name" content="CEADT" />
+    <meta property="og:title" content={`${program.title} | CEADT`} />
+    <meta property="og:description" content={description} />
+  </Fragment>
+  <Header slot="header" />
+  <PageHeader title={program.title} description={`Información y canales de orientación de ${program.contact.name}.`} breadcrumbs={[{ label: 'Inicio', href: '/' }, { label: 'Programas', href: '/programas' }, { label: program.audience }]} />
+  <div class="program-detail mx-auto grid max-w-content items-start lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-6 lg:px-6 lg:pt-8">
+    <ProgramNavigation sections={sections} />
+    <div class="min-w-0">
+  <section id="sobre-el-programa" aria-labelledby="presentation-title" class="py-16 sm:py-20 lg:py-24">
+    <Container width="reading">
+      <SectionHeading id="presentation-title" eyebrow="El programa" size="editorial" title={`Conoce el programa de ${program.audience.toLowerCase()}`} />
+      <p class="mt-6 text-lg leading-relaxed text-muted">{program.introduction}</p>
+      {program.overview && <p class="mt-6 text-lg leading-relaxed text-muted">{program.overview.objective}</p>}
+      <Button href={contactHref} class="mt-8">Contactar a {program.contact.name}</Button>
+    </Container>
+  </section>
+  {program.overview && <>
+    <section id="etapas" aria-labelledby="stages-title" class="bg-background-alt py-16 sm:py-20 lg:py-24">
+      <Container>
+        <SectionHeading id="stages-title" eyebrow="El proceso" size="editorial" title="Etapas del programa" />
+        <ol class="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-2">
+          {program.overview.stages.map((stage, index) => <li class="min-w-0 rounded-card border border-border bg-surface p-6">
+            <div class="flex min-h-16 items-center gap-4">
+              <span class="inline-flex size-12 shrink-0 items-center justify-center rounded-control bg-primary text-on-primary font-semibold" aria-label={`Etapa ${index + 1}`}>0{index + 1}</span>
+              <h3 class="min-w-0 text-xl font-semibold leading-snug">{stage.title}</h3>
+            </div>
+            <p class="mt-5 leading-relaxed text-muted">{stage.description}</p>
+          </li>)}
+        </ol>
+      </Container>
+    </section>
+    <section id="actividades" aria-labelledby="activities-title" class="py-16 sm:py-20 lg:py-24">
+      <Container>
+        <SectionHeading id="activities-title" eyebrow="Vida en el programa" size="editorial" title="Actividades y acompañamiento" />
+        <div class="mt-10 grid gap-6 md:grid-cols-2">
+          {program.overview.activities.map((activity) => <article class:list={['min-w-0 rounded-card border border-border p-6 sm:p-8', { 'md:col-span-2 bg-background-alt': activity.items.length === 1 }]}>
+            <h3 class:list={['text-xl font-semibold leading-snug text-primary', { 'md:min-h-14': activity.items.length > 1 }]}>{activity.title}</h3>
+            {activity.items.length === 1
+              ? <p class="mt-4 max-w-reading leading-relaxed text-muted">{activity.items[0]}</p>
+              : <ul class="mt-4 space-y-0 divide-y divide-border text-muted">{activity.items.map((item) => <li class="flex items-start gap-3 py-3 leading-relaxed"><span aria-hidden="true" class="mt-2.5 size-1.5 shrink-0 rounded-full bg-secondary"></span><span class="min-w-0">{item}</span></li>)}</ul>}
+          </article>)}
+        </div>
+        <p class="mt-8 max-w-reading leading-relaxed text-muted">Para conocer las actividades y apoyos disponibles, consulta directamente con {program.contact.name}.</p>
+      </Container>
+    </section>
+  </>}
+  <ProgramGuidance program={program} />
+  <section aria-label={`Contacto de ${program.contact.name}`} class="py-16 sm:py-20 lg:py-24">
+    <Container width="reading"><ProgramContact contact={program.contact} /><a href="/programas" class="mt-8 inline-block py-2 font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">Volver a nuestros programas</a></Container>
+  </section>
+    </div>
+  </div>
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .program-detail :global([id]) { scroll-margin-top: 6rem; }
+  @media (min-width: 64rem) {
+    .program-detail :global([id]) { scroll-margin-top: 2rem; }
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface SharedProps {
+  variant?: 'primary' | 'secondary' | 'outline';
+  size?: 'md' | 'lg';
+  class?: string;
+}
+
+interface LinkProps extends SharedProps, Omit<HTMLAttributes<'a'>, 'class' | 'href'> {
+  href: string;
+  type?: never;
+  disabled?: never;
+}
+
+// Sin href se exige una acción nativa de formulario.
+interface FormButtonProps extends SharedProps, Omit<HTMLAttributes<'button'>, 'class' | 'type'> {
+  href?: never;
+  type: 'submit' | 'reset';
+}
+
+type Props = LinkProps | FormButtonProps;
+const { variant = 'primary', size = 'md', class: className, ...attributes } = Astro.props;
+const variants = {
+  primary: 'border-primary bg-primary text-on-primary hover:border-primary-hover hover:bg-primary-hover',
+  secondary: 'border-secondary bg-secondary text-on-secondary hover:border-secondary-hover hover:bg-secondary-hover',
+  outline: 'border-primary bg-surface text-primary hover:bg-background-alt',
+};
+const sizes = { md: 'min-h-11 px-5 py-2.5 text-base', lg: 'min-h-12 px-6 py-3 text-lg' };
+const classes = [
+  'inline-flex max-w-full items-center justify-center gap-2 rounded-control border font-semibold leading-snug text-center whitespace-normal motion-safe:transition-colors motion-safe:duration-150 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus disabled:pointer-events-none disabled:opacity-50',
+  variants[variant], sizes[size], className,
+];
+---
+
+{typeof attributes.href === 'string' ? (
+  <a {...attributes} class:list={classes}><slot /></a>
+) : (
+  <button {...attributes} class:list={classes}><slot /></button>
+)}

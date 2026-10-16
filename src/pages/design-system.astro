@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Button from '../components/ui/Button.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import tokens from '../styles/tokens.css?raw';
+
+// Leer la fuente real evita mantener una segunda paleta en la herramienta.
+const colors = [...tokens.matchAll(/--color-([\w-]+):\s*(#[\da-f]{6})/gi)].map(
+  ([, name, hex]) => ({ name, hex: hex.toUpperCase() }),
+);
+const variants = ['primary', 'secondary', 'outline'] as const;
+const labels = { primary: 'Primario', secondary: 'Secundario', outline: 'Contorno' };
+const spaces = [
+  { label: '2 · 8 px', className: 'w-2' },
+  { label: '4 · 16 px', className: 'w-4' },
+  { label: '6 · 24 px', className: 'w-6' },
+  { label: '8 · 32 px', className: 'w-8' },
+  { label: '12 · 48 px', className: 'w-12' },
+  { label: '16 · 64 px', className: 'w-16' },
+];
+---
+
+<BaseLayout title="Sistema de diseño" description="Herramienta temporal de desarrollo para revisar el sistema visual de CEADT.">
+  <meta slot="head" name="robots" content="noindex, nofollow, noarchive" />
+  <header class="border-b border-border bg-background-alt py-12 sm:py-16">
+    <Container>
+      <p class="text-sm font-semibold text-primary">CEADT · Referencia visual</p>
+      <h1 class="mt-4 text-4xl font-semibold leading-tight tracking-tight text-balance sm:text-5xl">Sistema de diseño</h1>
+      <p class="mt-6 max-w-reading text-lg leading-relaxed text-muted">Herramienta temporal de desarrollo. Todos los textos de ejemplo son muestras de interfaz, no información institucional.</p>
+      <nav aria-label="Secciones de la referencia visual" class="mt-8 flex flex-wrap gap-x-6 gap-y-3">
+        {[
+          ['palette', 'Colores'], ['typography', 'Tipografía'], ['buttons', 'Botones'],
+          ['cards', 'Tarjetas'], ['section-example', 'Sección'], ['spacing', 'Espaciados'], ['focus', 'Foco'],
+        ].map(([id, label]) => <a href={`#${id}`} class="py-2 font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">{label}</a>)}
+      </nav>
+    </Container>
+  </header>
+
+  <Container class="space-y-16 py-12 sm:space-y-20 sm:py-16">
+    <section aria-labelledby="palette">
+      <SectionHeading id="palette" title="Paleta semántica" description="Colores leídos directamente de los tokens. El verde de acento es decorativo; los botones usan el verde oscuro accesible." />
+      <ul class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {colors.map(({ name, hex }) => (
+          <li class="overflow-hidden rounded-card border border-border bg-surface">
+            <div aria-hidden="true" class="h-24 border-b border-border" style={`background-color: var(--color-${name})`}></div>
+            <div class="space-y-1 p-4">
+              <p class="break-words font-semibold">{name}</p>
+              <p class="font-mono text-sm text-muted">{hex}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section aria-labelledby="typography">
+      <SectionHeading id="typography" title="Tipografía y jerarquía" description="Inter local. Una lectura tranquila, con contraste suficiente y una jerarquía reconocible." />
+      <Container width="reading" class="mt-8 space-y-8 rounded-card border border-border py-8">
+        <div>
+          <p class="mb-3 text-sm text-muted">H1 · 36 / 48 px · semibold (muestra visual)</p>
+          <p class="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">Un comienzo claro</p>
+          <p class="mt-3 text-sm text-muted">El H1 real es el título de esta página.</p>
+        </div>
+        <div>
+          <p class="mb-3 text-sm text-muted">H2 · 30 / 36 px · semibold</p>
+          <SectionHeading title="Espacio para lo esencial" />
+        </div>
+        <div>
+          <p class="mb-3 text-sm text-muted">H3 · 24 px · semibold</p>
+          <SectionHeading level="h3" title="Cada detalle cuenta" />
+        </div>
+        <div class="space-y-4">
+          <p class="text-base leading-relaxed">Párrafo de ejemplo para evaluar la lectura. Las líneas tienen un ancho controlado y el interlineado permite recorrer el contenido sin esfuerzo.</p>
+          <p class="text-muted">Texto secundario: aporta contexto sin perder legibilidad.</p>
+          <p class="text-sm leading-normal text-muted">Metadatos de ejemplo · 14 px. No se utiliza para información esencial.</p>
+        </div>
+      </Container>
+    </section>
+
+    <section aria-labelledby="buttons">
+      <SectionHeading id="buttons" title="Botones y estados" description="Los enlaces llevan al ejemplo de sección. Pasa el cursor o utiliza Tab para comprobar hover y foco reales. El foco permanece visible al navegar con teclado." />
+      <div class="mt-8 grid gap-6 lg:grid-cols-3">
+        {variants.map((variant) => (
+          <div class="space-y-6 rounded-card border border-border bg-surface p-6">
+            <h3 class="text-xl font-semibold">{labels[variant]}</h3>
+            <div class="flex flex-wrap items-start gap-4">
+              <Button href="#section-example" variant={variant}>{labels[variant]}</Button>
+              <Button href="#section-example" variant={variant} size="lg">Tamaño grande</Button>
+            </div>
+            <div>
+              <p class="mb-3 text-sm text-muted">Muestra persistente del contorno de foco</p>
+              <Button href="#focus" variant={variant} class="outline-2 outline-offset-4 outline-focus">Revisar foco</Button>
+            </div>
+            <div>
+              <p class="mb-3 text-sm text-muted">Estado deshabilitado nativo</p>
+              <Button type="submit" variant={variant} disabled>No disponible</Button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section aria-labelledby="cards">
+      <SectionHeading id="cards" title="Tarjetas institucionales de ejemplo" description="Muestras sin contenido institucional. Superficie blanca, borde suave y radio común; la sombra es opcional." />
+      <div class="mt-8 grid gap-6 md:grid-cols-2">
+        {['Solo borde', 'Sombra discreta'].map((label, index) => (
+          <article class:list={['flex flex-col items-start rounded-card border border-border bg-surface p-6 sm:p-8', { 'shadow-card': index === 1 }]}>
+            <p class="text-sm font-semibold text-primary">Muestra {index + 1}</p>
+            <h3 class="mt-3 text-2xl font-semibold leading-snug">{label}</h3>
+            <p class="mt-4 max-w-reading leading-relaxed text-muted">Texto de demostración para revisar la composición de un bloque informativo. No representa un servicio, programa o noticia real.</p>
+            <Button href="#section-example" variant="outline" class="mt-6">Ver ejemplo de sección</Button>
+          </article>
+        ))}
+      </div>
+    </section>
+  </Container>
+
+  <section aria-labelledby="section-example" class="bg-background-alt py-12 sm:py-16 lg:py-20">
+    <Container>
+      <SectionHeading id="section-example" align="center" title="Una sección con espacio para respirar" description="Ejemplo de título, descripción y contenido. La alineación centrada se reserva para introducciones breves." />
+      <Container width="reading" class="mt-8 space-y-6">
+        <p class="leading-relaxed">Este contenido es una muestra visual. Permite comprobar el ancho de lectura y la separación entre el encabezado, el párrafo y la acción.</p>
+        <Button href="#palette">Volver a la paleta</Button>
+      </Container>
+    </Container>
+  </section>
+
+  <Container class="space-y-16 py-12 sm:space-y-20 sm:py-16">
+    <section aria-labelledby="spacing">
+      <SectionHeading id="spacing" title="Contenedores y espaciados" description="Ancho general de 72rem y ancho de lectura de 42rem. Ambos se adaptan al espacio disponible con márgenes interiores responsivos." />
+      <div class="mt-8 space-y-6">
+        <Container class="rounded-card border border-dashed border-primary bg-background-alt py-6">
+          <p class="font-semibold">Container · content · máximo 72rem</p>
+          <p class="mt-2 text-muted">Gutters: 16 px en móvil, 24 px desde sm y 32 px desde lg.</p>
+        </Container>
+        <Container width="reading" class="rounded-card border border-dashed border-primary bg-background-alt py-6">
+          <p class="font-semibold">Container · reading · máximo 42rem</p>
+          <p class="mt-2 text-muted">Los anchos máximos incluyen el padding. Estos recuadros son muestras de límites, no tarjetas.</p>
+        </Container>
+      </div>
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {spaces.map(({ label, className }) => (
+          <li class="flex items-center gap-4 rounded-control border border-border p-4">
+            <span aria-hidden="true" class:list={['h-6 shrink-0 rounded bg-primary', className]}></span>
+            <span class="text-sm text-muted">{label}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-4 text-sm text-muted">Escala nativa de Tailwind, con 1rem = 16 px como referencia. El tamaño respeta las preferencias del navegador.</p>
+    </section>
+
+    <section aria-labelledby="focus">
+      <SectionHeading id="focus" title="Prueba de foco y teclado" description="Usa Tab y Mayús + Tab para recorrer los controles. El contorno azul de 2 px queda separado 4 px del elemento. Enter activa enlaces; Espacio activa botones." />
+      <form class="mt-8 max-w-reading space-y-6 rounded-card border border-border p-6 sm:p-8">
+        <div>
+          <label for="sample-text" class="block font-semibold">Texto de prueba</label>
+          <p id="sample-help" class="mt-2 text-sm text-muted">Escribe cualquier texto y pulsa Restablecer. Esta prueba no envía ni guarda datos.</p>
+          <input id="sample-text" type="text" aria-describedby="sample-help" autocomplete="off" class="mt-3 min-h-11 w-full rounded-control border border-primary bg-surface px-4 py-3 text-foreground" />
+        </div>
+        <div class="flex flex-wrap gap-4">
+          <Button type="reset">Restablecer prueba</Button>
+          <Button href="#main-content" variant="outline">Volver al comienzo</Button>
+        </div>
+      </form>
+    </section>
+  </Container>
+  <footer class="border-t border-border bg-background-alt py-8">
+    <Container><p class="text-sm text-muted">CEADT · Herramienta temporal de desarrollo · Contenido de demostración</p></Container>
+  </footer>
+</BaseLayout>

@@ -1,0 +1,24 @@
+---
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+const resources = [
+  { title: 'Compromiso Biopsicosocial', path: 'M9 16l5 5 9-10M8 5h16v24H8z' },
+  { title: 'Alerta de Recaídas', path: 'M16 5 3 27h26L16 5Zm0 8v6m0 4v1' },
+  { title: 'Test de Seguimiento', path: 'M8 5h16v24H8zM12 12h8m-8 5h8m-8 5h5' },
+];
+---
+<section id="recursos" aria-labelledby="resources-title" class="border-y border-border bg-background-alt py-16 sm:py-20 lg:py-28">
+  <Container>
+    <SectionHeading size="editorial" id="resources-title" eyebrow="Tests y recursos" title="Conoce los recursos del centro" description="Contacta al centro para obtener información sobre estos recursos." />
+    <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {resources.map((resource, index) => <article class="flex min-w-0 flex-col items-start rounded-card border border-border bg-surface p-8">
+        <span aria-hidden="true" class="mb-6 flex size-12 items-center justify-center rounded-card bg-primary/5 text-primary">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="size-7"><path d={resource.path}/></svg>
+        </span>
+        <h3 class="grow text-xl font-semibold leading-snug text-balance">{resource.title}</h3>
+        <Button href={index === 0 ? "/tests/compromiso-biopsicosocial" : index === 1 ? "/tests/alerta-de-recaidas" : "/tests/seguimiento"} variant="outline" class="mt-8" aria-label={`Iniciar ${resource.title}`}>Iniciar cuestionario</Button>
+      </article>)}
+    </div>
+  </Container>
+</section>

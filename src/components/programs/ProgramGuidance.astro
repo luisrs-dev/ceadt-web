@@ -1,0 +1,56 @@
+---
+import ReferralForm from './ReferralForm.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Button from '../ui/Button.astro';
+import type { Program } from '../../data/programs';
+interface Props { program: Program; }
+const { program } = Astro.props;
+const contactHref = `#contacto-${program.slug}`;
+---
+<div id="orientacion">
+  <section id="como-ingresar" aria-labelledby="admission-title" class="bg-background-alt py-16 sm:py-20 lg:py-24">
+    <Container>
+      <SectionHeading id="admission-title" eyebrow="Para personas y familias" size="editorial" title="¿Cómo ingresar al programa?" description={program.admission ? 'Conoce la vía de evaluación y derivación a CEADT.' : `Consulta directamente con ${program.contact.name} sobre los procedimientos de ingreso.`} />
+      {program.admission && <div class="mt-8 max-w-reading rounded-card border border-border bg-surface p-6 sm:p-8">
+        <h3 class="text-xl font-semibold text-primary">Para ingresar a CEADT</h3>
+        <p class="mt-5 leading-relaxed text-muted">En primer lugar, debes contar con inscripción en el CESFAM de tu sector e iniciar un proceso de evaluación y tratamiento en uno de los siguientes programas:</p>
+        <ol class="mt-5 list-decimal space-y-3 pl-6 leading-relaxed text-muted">
+          {program.admission.pathways.map((pathway) => <li class="pl-1">{pathway}</li>)}
+        </ol>
+        <p class="mt-6 leading-relaxed text-muted">Para buscar información sobre los programas PAB y PAI de tu localidad, consulta el <a href={program.admission.resourceUrl} class="font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">mapa del sitio de SENDA</a>.</p>
+        <ul class="mt-6 list-disc space-y-3 pl-6 leading-relaxed text-muted">
+          <li class="pl-1">El equipo del programa evalúa la pertinencia y los criterios de ingreso.</li>
+          <li class="pl-1">Si la derivación se considera pertinente, el equipo envía un informe de derivación a CEADT.</li>
+        </ul>
+        <p class="mt-6 border-t border-border pt-5 leading-relaxed text-muted">A continuación puedes revisar los criterios de ingreso, la recepción y respuesta, la preparación y el momento del ingreso.</p>
+      </div>}
+      {program.admission?.panels && <div class="mt-10 max-w-reading space-y-4">
+        {program.admission.panels.map((panel, index) => <details id={panel.id} open={index === 0} class="group scroll-mt-6 rounded-card border border-border bg-surface">
+          <summary class="flex min-h-16 cursor-pointer list-none items-center justify-between gap-5 rounded-card p-5 font-semibold leading-snug text-foreground hover:text-primary sm:p-6">
+            <h3 class="text-lg sm:text-xl">{panel.title}</h3>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="size-5 shrink-0 text-primary group-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="px-5 pb-6 leading-relaxed text-muted sm:px-6">
+            <p>{panel.introduction}</p>
+            <ol class="mt-5 list-decimal space-y-3 pl-6">{panel.items.map((item) => <li class="pl-1">{item}</li>)}</ol>
+            {panel.note && <p class="mt-6 border-l-2 border-secondary pl-4">{panel.note}</p>}
+          </div>
+        </details>)}
+      </div>}
+      <Button href={contactHref} class="mt-8">Consultar ingreso con {program.contact.name}</Button>
+    </Container>
+  </section>
+  <section id="como-derivar" aria-labelledby="referral-title" class="py-16 sm:py-20 lg:py-24">
+    <Container class="grid items-start gap-10 lg:gap-12">
+      <div class="min-w-0">
+        <SectionHeading id="referral-title" eyebrow="Para profesionales" size="editorial" title="¿Cómo realizar una derivación?" />
+        {program.referralAudience ? <>
+          <p class="mt-6 font-semibold leading-relaxed text-foreground">{program.referralAudience}</p>
+          <p class="mt-4 max-w-reading leading-relaxed text-muted">Si perteneces a esta red y deseas derivar a una persona para evaluación, <a href={contactHref} class="font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">contacta directamente a {program.contact.name}</a> para coordinar el envío de la ficha o informe de derivación.</p>
+        </> : <p class="mt-6 max-w-reading leading-relaxed text-muted">Si eres profesional o representas a una institución, <a href={contactHref} class="font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">contacta a {program.contact.name}</a> para consultar cómo realizar una derivación.</p>}
+      </div>
+      {program.referralAudience && <ReferralForm contact={program.contact} />}
+    </Container>
+  </section>
+</div>

@@ -1,0 +1,99 @@
+---
+import Button from '../ui/Button.astro';
+import FollowUpQuestion from './FollowUpQuestion.astro';
+import { followUpSections, dischargeQuestion } from '../../data/follow-up-test';
+const inputClass = 'mt-2 min-h-12 w-full min-w-0 rounded-control border border-primary/40 bg-surface px-4 py-3 text-foreground';
+const year = new Date().getFullYear();
+---
+<div data-followup-root>
+  <div class="mb-8 rounded-card border border-border bg-background-alt p-5 sm:p-6">
+    <h2 class="text-xl font-semibold">Antes de comenzar</h2>
+    <p class="mt-3 leading-relaxed text-muted">Cuestionario para personas que han egresado de CEADT. Puedes revisar tus respuestas al finalizar; no hay puntuación ni diagnóstico.</p>
+    <p class="mt-3 text-sm leading-relaxed text-muted">Las respuestas se utilizan solo en esta página: no se envían ni se guardan. Los datos de identificación son opcionales en esta versión local; puedes dejarlos en blanco. No se realiza una solicitud de contacto.</p>
+    <noscript><p class="mt-4 font-semibold">Activa JavaScript para utilizar la revisión local de respuestas.</p></noscript>
+  </div>
+  <nav aria-label="Bloques del test" class="mb-8"><ul class="flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold text-primary">
+    <li><a href="#egreso" class="inline-block py-2 underline underline-offset-4">Datos de egreso</a></li>
+    {followUpSections.map((section) => <li><a href={`#${section.id}`} class="inline-block py-2 underline underline-offset-4">{section.title}</a></li>)}
+  </ul></nav>
+  <p data-followup-progress role="status" class="mb-6 text-sm font-semibold text-primary">0 de 20 respuestas completadas</p>
+  <form data-followup-form method="dialog" autocomplete="off" class="space-y-12">
+    <section id="egreso" aria-labelledby="egreso-title" class="scroll-mt-6 space-y-6">
+      <h2 id="egreso-title" class="text-2xl font-semibold">Datos de egreso</h2>
+      <div class="grid gap-6 rounded-card border border-border bg-background-alt p-5 sm:grid-cols-2 sm:p-6">
+        <div data-followup-item class="min-w-0"><label for="followup-full-name" class="font-semibold">Nombre y apellidos <span class="text-sm font-normal text-muted">(opcional)</span></label><input id="followup-full-name" type="text" data-summary-label="Nombre y apellidos" class={inputClass} /></div>
+        <div data-followup-item class="min-w-0"><label for="followup-phone" class="font-semibold">Teléfono <span class="text-sm font-normal text-muted">(opcional)</span></label><input id="followup-phone" type="tel" data-summary-label="Teléfono" class={inputClass} /></div>
+        <div data-followup-item class="min-w-0"><label for="followup-exit-year" class="font-semibold">Año de egreso <span class="text-sm font-normal text-muted">(opcional)</span></label><input id="followup-exit-year" type="number" min="1900" max={year} step="1" data-summary-label="Año de egreso" class={inputClass} /></div>
+      </div>
+      <FollowUpQuestion question={dischargeQuestion} />
+    </section>
+    {followUpSections.map((section) => <section id={section.id} aria-labelledby={`${section.id}-title`} class="scroll-mt-6 space-y-6">
+      <div><h2 id={`${section.id}-title`} class="text-2xl font-semibold leading-snug">{section.title}</h2><p class="mt-3 leading-relaxed text-muted">{section.description}</p></div>
+      {section.questions.map((question) => <FollowUpQuestion question={question} />)}
+    </section>)}
+    <div class="flex flex-col gap-4 border-t border-border pt-8 sm:flex-row sm:flex-wrap">
+      <Button data-followup-review-button type="submit" disabled>Revisar mis respuestas</Button>
+      <Button type="reset" variant="outline">Limpiar respuestas</Button>
+    </div>
+  </form>
+  <section data-followup-review hidden tabindex="-1" aria-labelledby="followup-review-title" class="mt-10 rounded-card border border-border bg-background-alt p-5 sm:p-8">
+    <h2 id="followup-review-title" class="text-2xl font-semibold">Revisión de tus respuestas</h2>
+    <p class="mt-4 leading-relaxed text-muted">Este resumen es local y no ha sido enviado a CEADT. No constituye una evaluación clínica. Las preguntas sin contestar aparecen como «Sin responder».</p>
+    <dl data-followup-summary class="mt-6 space-y-6"></dl>
+    <Button href="/#contacto" class="mt-8">Contactar al centro</Button>
+  </section>
+</div>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-followup-root]');
+  const form = root?.querySelector<HTMLFormElement>('[data-followup-form]');
+  if (root && form) {
+    const items = [...form.querySelectorAll<HTMLElement>('[data-followup-item]')];
+    const progress = root.querySelector<HTMLElement>('[data-followup-progress]');
+    const review = root.querySelector<HTMLElement>('[data-followup-review]');
+    const summary = root.querySelector<HTMLElement>('[data-followup-summary]');
+    const button = form.querySelector<HTMLButtonElement>('[data-followup-review-button]');
+    if (button) button.disabled = false;
+    const selectedLabels = (item: HTMLElement) => [...item.querySelectorAll<HTMLInputElement>('input:checked')].map((input) => input.closest('label')?.querySelector('[data-option-label]')?.textContent?.trim() ?? '');
+    const textInput = (item: HTMLElement) => item.querySelector<HTMLInputElement>('[data-summary-label]');
+    const update = () => {
+      const completed = items.filter((item) => textInput(item)?.value.trim() || selectedLabels(item).length).length;
+      if (progress) progress.textContent = `${completed} de ${items.length} respuestas completadas`;
+      if (review) review.hidden = true;
+      summary?.replaceChildren();
+    };
+    form.addEventListener('change', (event) => {
+      const input = event.target;
+      if (input instanceof HTMLInputElement && input.type === 'checkbox' && input.checked) {
+        const group = input.closest('fieldset');
+        if (input.dataset.exclusive) group?.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((other) => { if (other !== input) other.checked = false; });
+        else {
+          const exclusive = group?.querySelector<HTMLInputElement>('input[data-exclusive]');
+          if (exclusive) exclusive.checked = false;
+        }
+      }
+      update();
+    });
+    form.addEventListener('input', (event) => { if (event.target instanceof HTMLInputElement && !['radio', 'checkbox'].includes(event.target.type)) update(); });
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.checkValidity() || !summary || !review) return;
+      summary.replaceChildren();
+      for (const item of items) {
+        const field = textInput(item);
+        const group = document.createElement('div');
+        const title = document.createElement('dt');
+        title.className = 'font-semibold';
+        title.textContent = field?.dataset.summaryLabel ?? item.querySelector('legend')?.textContent ?? '';
+        const answer = document.createElement('dd');
+        answer.className = 'mt-2 break-words leading-relaxed text-muted';
+        answer.textContent = field ? field.value.trim() || 'Sin responder' : selectedLabels(item).join('; ') || 'Sin responder';
+        group.append(title, answer);
+        summary.append(group);
+      }
+      review.hidden = false;
+      review.focus();
+    });
+    form.addEventListener('reset', () => { summary?.replaceChildren(); requestAnimationFrame(update); });
+    update();
+  }
+</script>

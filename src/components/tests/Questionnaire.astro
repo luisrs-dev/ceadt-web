@@ -1,0 +1,112 @@
+---
+import Button from '../ui/Button.astro';
+import type { TestQuestion } from '../../data/biopsychosocial-test';
+interface Props {
+  questions: TestQuestion[];
+  instructions: string;
+  scoringDescription: string;
+  scoringReady?: boolean;
+  scoreLabel?: string;
+  compactScale?: boolean;
+}
+const { questions, instructions, scoringDescription, scoringReady = true, scoreLabel = 'Puntaje total', compactScale = false } = Astro.props;
+const minScore = questions.length;
+const maxScore = questions.reduce((sum, question) => sum + question.options.length, 0);
+---
+<div data-questionnaire>
+  <div class="mb-8 rounded-card border border-border bg-background-alt p-5 sm:p-6">
+    <h2 class="text-xl font-semibold">Antes de comenzar</h2>
+    <p class="mt-3 leading-relaxed text-muted">{instructions}</p>
+    <p class="mt-3 text-sm leading-relaxed text-muted">{scoringDescription} Las respuestas no se envían al servidor ni se guardan por esta web. No se calcula un diagnóstico ni una categoría clínica.</p>
+    <noscript><p class="mt-4 font-semibold text-primary">Activa JavaScript para utilizar el progreso y la revisión local de respuestas.</p></noscript>
+  </div>
+  <div class="mb-8" aria-label="Progreso del cuestionario">
+    <p data-progress-label role="status" class="mb-3 text-sm font-semibold text-primary">0 de {questions.length} preguntas respondidas</p>
+    <progress data-progress max={questions.length} value="0" aria-label="Preguntas respondidas" class="block h-2 w-full overflow-hidden rounded-full accent-primary"></progress>
+  </div>
+  <form data-test-form method="dialog" autocomplete="off" class="space-y-6">
+    {questions.map((question, index) => <fieldset data-question={question.id} data-option-count={question.options.length} class="min-w-0 rounded-card border border-border bg-surface p-5 sm:p-8">
+      <legend class="max-w-full px-2 text-lg font-semibold leading-snug"><span class="mr-2 text-primary">{question.number ?? index + 1}.</span> {question.title}</legend>
+      {question.explanation && <details class="mb-5 rounded-control border border-border bg-background-alt p-4">
+        <summary class="cursor-pointer font-medium text-primary">Consultar conceptos incluidos en el cuestionario</summary>
+        <div class="mt-4 space-y-4">{question.explanation.map((item) => <div><h3 class="font-semibold">{item.title}</h3><p class="mt-2 text-sm leading-relaxed text-muted">{item.text}</p></div>)}</div>
+      </details>}
+      <div class:list={[compactScale ? 'grid gap-3 sm:grid-cols-2' : 'space-y-3']}>{question.options.map((option, optionIndex) => <label class="flex cursor-pointer items-start gap-3 rounded-control border border-border p-4 hover:border-primary/50 has-checked:border-primary has-checked:bg-primary/5 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus">
+        <input type="radio" name={`question-${question.id}`} value={optionIndex + 1} required class="mt-1 size-5 shrink-0 accent-primary" />
+        <span data-option-label class="min-w-0 leading-relaxed text-muted">{option}</span>
+      </label>)}</div>
+    </fieldset>)}
+    <p data-validation role="alert" class="text-sm font-semibold text-primary"></p>
+    <div class="flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+      <Button data-review-button type="submit" disabled>Revisar mis respuestas</Button>
+      <Button type="reset" variant="outline">Limpiar respuestas</Button>
+    </div>
+  </form>
+  <section data-review hidden tabindex="-1" aria-labelledby="review-title" class="mt-10 rounded-card border border-border bg-background-alt p-5 sm:p-8">
+    <h2 id="review-title" class="text-2xl font-semibold">Revisión de tus respuestas</h2>
+    {scoringReady && <div class="mt-6 rounded-control border border-border bg-surface p-5">
+      <p class="text-sm font-semibold text-muted">{scoreLabel}</p>
+      <p class="mt-2 text-3xl font-semibold text-primary"><span data-score>0</span><span class="text-lg font-normal text-muted"> / {maxScore} puntos</span></p>
+      <p class="mt-2 text-sm text-muted">Suma de las {questions.length} respuestas. El rango posible es de {minScore} a {maxScore} puntos.</p>
+    </div>}
+    <p class="mt-4 leading-relaxed text-muted">Este resumen muestra tus selecciones. No constituye una evaluación clínica ni determina criterios de ingreso. Para su interpretación, contacta al equipo de CEADT.</p>
+    <dl data-review-list class="mt-6 space-y-6"></dl>
+    <Button href="/#contacto" class="mt-8">Contactar a CEADT</Button>
+  </section>
+</div>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-questionnaire]');
+  const form = root?.querySelector<HTMLFormElement>('[data-test-form]');
+  if (root && form) {
+    const fieldsets = [...form.querySelectorAll<HTMLFieldSetElement>('[data-question]')];
+    const progress = root.querySelector<HTMLProgressElement>('[data-progress]');
+    const progressLabel = root.querySelector<HTMLElement>('[data-progress-label]');
+    const validation = form.querySelector<HTMLElement>('[data-validation]');
+    const review = root.querySelector<HTMLElement>('[data-review]');
+    const reviewList = root.querySelector<HTMLElement>('[data-review-list]');
+    const score = root.querySelector<HTMLElement>('[data-score]');
+    const button = form.querySelector<HTMLButtonElement>('[data-review-button]');
+    if (button) button.disabled = false;
+    const update = () => {
+      const count = fieldsets.filter((field) => field.querySelector('input:checked')).length;
+      if (progress) progress.value = count;
+      if (progressLabel) progressLabel.textContent = `${count} de ${fieldsets.length} preguntas respondidas`;
+      if (validation) validation.textContent = '';
+      if (review) review.hidden = true;
+    };
+    form.addEventListener('change', update);
+    form.addEventListener('invalid', () => {
+      if (validation) validation.textContent = 'Selecciona una alternativa en cada pregunta para revisar tus respuestas.';
+    }, true);
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.checkValidity() || !review || !reviewList) return;
+      reviewList.replaceChildren();
+      let total = 0;
+      for (const field of fieldsets) {
+        const selected = field.querySelector<HTMLInputElement>('input:checked');
+        const points = Number(selected?.value);
+        if (!Number.isInteger(points) || points < 1 || points > Number(field.dataset.optionCount)) return;
+        total += points;
+        const group = document.createElement('div');
+        const title = document.createElement('dt');
+        title.className = 'font-semibold';
+        title.textContent = field.querySelector('legend')?.textContent ?? '';
+        const answer = document.createElement('dd');
+        answer.className = 'mt-2 leading-relaxed text-muted';
+        answer.textContent = `${score ? `${points} ${points === 1 ? 'punto' : 'puntos'} · ` : ''}${selected?.closest('label')?.querySelector('[data-option-label]')?.textContent ?? ''}`;
+        group.append(title, answer);
+        reviewList.append(group);
+      }
+      if (score) score.textContent = String(total);
+      review.hidden = false;
+      review.focus();
+    });
+    form.addEventListener('reset', () => {
+      reviewList?.replaceChildren();
+      if (score) score.textContent = '0';
+      requestAnimationFrame(update);
+    });
+    update();
+  }
+</script>

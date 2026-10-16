@@ -1,0 +1,19 @@
+---
+import Button from '../ui/Button.astro';
+import type { Program } from '../../data/programs';
+interface Props { program: Program; }
+const { program } = Astro.props;
+---
+<article class="flex min-w-0 flex-col items-start rounded-card border border-border bg-surface p-8 sm:p-10 motion-safe:transition-colors hover:border-primary/40">
+  <span aria-hidden="true" class="mb-6 flex size-14 items-center justify-center rounded-card bg-secondary/10 text-secondary">
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" class="size-8"><path d="m5 15 11-9 11 9v11H5Z" stroke-linejoin="round"/><path d="M12 26V16h8v10"/><path d="M3 16 16 5l13 11" stroke-linecap="round"/></svg>
+  </span>
+  <p class="text-sm font-semibold text-secondary">Programa residencial</p>
+  <h3 class="mt-2 text-2xl font-semibold leading-snug"><a href={`/programas/${program.slug}`} class="rounded-control hover:text-primary">{program.title}</a></h3>
+  <p class="mt-4 grow leading-relaxed text-muted">{program.description}</p>
+  <Button href={`/programas/${program.slug}`} variant="outline" class="mt-8 w-full sm:w-auto" aria-label={`Conocer ${program.title}`}>Conocer programa</Button>
+  <div class="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold text-primary">
+    <a href={`/programas/${program.slug}#como-ingresar`} class="py-2 underline underline-offset-4 hover:text-primary-hover">Cómo ingresar</a>
+    <a href={`/programas/${program.slug}#como-derivar`} class="py-2 underline underline-offset-4 hover:text-primary-hover">Cómo derivar</a>
+  </div>
+</article>

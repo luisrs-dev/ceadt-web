@@ -1,0 +1,68 @@
+---
+import { Image } from 'astro:assets';
+import homeImage from '../assets/home.jpg';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import InstitutionalCta from '../components/sections/InstitutionalCta.astro';
+import Container from '../components/ui/Container.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import { institutional, commitments } from '../data/institutional';
+const purposeCards = [
+  { title: 'Nuestra misión', text: institutional.mission, path: 'M16 5v22M5 16h22M16 9a7 7 0 1 0 0 14 7 7 0 0 0 0-14' },
+  { title: 'Nuestra visión', text: institutional.vision, path: 'M3 16s5-9 13-9 13 9 13 9-5 9-13 9S3 16 3 16Zm13-4a4 4 0 1 0 0 8 4 4 0 0 0 0-8' },
+];
+---
+<BaseLayout title="Nosotros" description="Conoce CEADT, su misión, visión y compromiso con el tratamiento de adicciones, la rehabilitación y la reinserción social en la Región del Maule.">
+  <Fragment slot="head">
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:site_name" content="CEADT" />
+    <meta property="og:title" content="Conoce CEADT | Nosotros" />
+    <meta property="og:description" content="Nuestra misión, visión y compromiso con la rehabilitación y reinserción social en la Región del Maule." />
+  </Fragment>
+  <Header slot="header" />
+  <PageHeader title="Conoce CEADT" description="Centro Especialista en Tratamiento de Adicciones en la Región del Maule." breadcrumbs={[{ label: 'Inicio', href: '/' }, { label: 'Nosotros' }]} />
+
+  <section aria-labelledby="about-introduction" class="py-16 sm:py-20 lg:py-28">
+    <Container class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+      <div class="min-w-0">
+        <SectionHeading id="about-introduction" eyebrow="Quiénes somos" size="editorial" title="Un propósito centrado en acompañar" />
+        {institutional.introduction.map((paragraph) => <p class="mt-6 max-w-reading text-lg leading-relaxed text-muted">{paragraph}</p>)}
+      </div>
+      <figure class="min-w-0">
+        <Image src={homeImage} alt="Patio de CEADT con vegetación, piscina y edificios con techos de tejas." widths={[480, 768, 1024]} sizes="(min-width: 1152px) 512px, (min-width: 1024px) 45vw, 92vw" format="webp" loading="lazy" class="aspect-[5/4] w-full rounded-card object-cover" />
+        <figcaption class="mt-3 text-sm text-muted">Instalaciones de CEADT · Región del Maule</figcaption>
+      </figure>
+    </Container>
+  </section>
+
+  <section aria-labelledby="purpose-title" class="border-y border-border bg-background-alt py-16 sm:py-20 lg:py-28">
+    <Container>
+      <SectionHeading id="purpose-title" eyebrow="Misión y visión" size="editorial" title="El propósito que guía nuestro trabajo" />
+      <div class="mt-12 grid gap-6 md:grid-cols-2 lg:gap-8">
+        {purposeCards.map((card) => <article class="min-w-0 rounded-card border border-border bg-surface p-6 sm:p-8 lg:p-10">
+          <span aria-hidden="true" class="mb-6 flex size-14 items-center justify-center rounded-card bg-primary/5 text-primary"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="size-8"><path d={card.path}/></svg></span>
+          <h3 class="text-2xl font-semibold leading-snug">{card.title}</h3>
+          <p class="mt-5 max-w-reading text-lg leading-relaxed text-muted">{card.text}</p>
+        </article>)}
+      </div>
+    </Container>
+  </section>
+
+  <section aria-labelledby="commitment-title" class="py-16 sm:py-20 lg:py-28">
+    <Container>
+      <SectionHeading id="commitment-title" eyebrow="Nuestro compromiso" size="editorial" title="Lo que orienta nuestra labor" description="Cuatro ejes que reúnen el propósito de CEADT." />
+      <ul class="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        {commitments.map((commitment) => <li class="min-w-0 rounded-card border border-border p-6">
+          <svg aria-hidden="true" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mb-5 size-8 text-secondary"><path d={commitment.iconPath}/></svg>
+          <h3 class="text-xl font-semibold leading-snug">{commitment.title}</h3>
+          <p class="mt-4 leading-relaxed text-muted">{commitment.description}</p>
+        </li>)}
+      </ul>
+    </Container>
+  </section>
+  <InstitutionalCta />
+  <Footer slot="footer" />
+</BaseLayout>

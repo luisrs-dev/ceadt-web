@@ -1,0 +1,5 @@
+---
+import Questionnaire from './Questionnaire.astro';
+import { biopsychosocialQuestions } from '../../data/biopsychosocial-test';
+---
+<Questionnaire questions={biopsychosocialQuestions} instructions="Lee cada enunciado y selecciona una sola alternativa. Algunas preguntas requieren antecedentes o evaluación profesional; si no conoces la respuesta, consúltala con el equipo de CEADT." scoringDescription="Cada primera alternativa vale 1 punto; la segunda, 2; y la tercera, 3." />

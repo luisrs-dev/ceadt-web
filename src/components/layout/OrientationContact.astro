@@ -1,0 +1,16 @@
+---
+import { orientationWhatsApp } from '../../data/contact';
+const channel = orientationWhatsApp;
+const href = channel
+  ? `https://wa.me/${channel.number.replace(/\D/g, '')}?text=${encodeURIComponent('Hola, quisiera solicitar orientación sobre los programas de CEADT.')}`
+  : '/#contacto';
+---
+<a href={href} aria-label={channel ? '¿Necesitas orientación? Escríbenos por WhatsApp' : '¿Necesitas orientación? Ver canales de contacto de CEADT'} class="orientation-contact fixed bottom-6 left-4 z-40 inline-flex min-h-12 max-w-[calc(100vw-6rem)] items-center gap-3 rounded-card border border-border bg-surface p-2 text-foreground shadow-card hover:border-secondary sm:left-6">
+  <span class="pl-2"><span class="block text-sm font-semibold">¿Necesitas orientación?</span><span class="block text-xs text-muted">{channel ? 'Escríbenos por WhatsApp' : 'Ver canales de contacto'}</span></span>
+  <span aria-hidden="true" class="flex size-11 shrink-0 items-center justify-center rounded-full bg-secondary text-on-secondary">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="size-6"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 21l1.7-5.4A8.5 8.5 0 1 1 21 11.5Z" stroke-linecap="round" stroke-linejoin="round" /></svg>
+  </span>
+</a>
+<style>
+  .orientation-contact { bottom: max(1.5rem, env(safe-area-inset-bottom)); }
+</style>

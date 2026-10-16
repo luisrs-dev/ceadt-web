@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Container from '../../components/ui/Container.astro';
+import NewsCard from '../../components/news/NewsCard.astro';
+import { news } from '../../data/news';
+const articles = [...news].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+---
+<BaseLayout title="Noticias" description="Noticias y publicaciones sobre las actividades de CEADT y su trabajo en el tratamiento de adicciones.">
+  <Header slot="header" />
+  <PageHeader title="Noticias" description="Conoce las actividades y publicaciones de CEADT. Cada noticia conserva su fecha original de publicación." breadcrumbs={[{ label: 'Inicio', href: '/' }, { label: 'Noticias' }]} />
+  <section aria-label="Publicaciones de CEADT" class="py-16 sm:py-20 lg:py-24">
+    <Container>
+      <div class="grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+        {articles.map((article) => <NewsCard article={article} />)}
+      </div>
+    </Container>
+  </section>
+  <Footer slot="footer" />
+</BaseLayout>

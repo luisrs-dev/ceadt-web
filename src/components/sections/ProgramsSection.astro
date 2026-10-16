@@ -1,0 +1,14 @@
+---
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import ProgramCard from '../programs/ProgramCard.astro';
+import { programs } from '../../data/programs';
+---
+<section id="programas" aria-labelledby="programs-title" class="bg-background-alt py-16 sm:py-20 lg:py-28">
+  <Container>
+    <SectionHeading size="editorial" id="programs-title" eyebrow="Nuestros programas" title="Conoce nuestros programas residenciales" description="Encuentra el contacto del centro correspondiente para solicitar información." />
+    <div class="mt-12 grid gap-8 md:grid-cols-2">
+      {programs.map((program) => <ProgramCard program={program} />)}
+    </div>
+  </Container>
+</section>

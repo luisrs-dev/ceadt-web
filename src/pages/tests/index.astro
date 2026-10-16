@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Container from '../../components/ui/Container.astro';
+import Button from '../../components/ui/Button.astro';
+---
+<BaseLayout title="Tests y recursos" description="Accede al cuestionario de Compromiso Biopsicosocial de CEADT y consulta sobre otros recursos del centro.">
+  <Header slot="header" />
+  <PageHeader title="Tests y recursos" description="Encuentra los cuestionarios y canales de consulta de CEADT." breadcrumbs={[{ label: 'Inicio', href: '/' }, { label: 'Tests' }]} />
+  <Container class="grid gap-6 py-16 md:grid-cols-2 lg:grid-cols-3 lg:py-24">
+    <article class="flex min-w-0 flex-col items-start rounded-card border border-border bg-background-alt p-6 sm:p-8">
+      <p class="text-sm font-semibold text-secondary">15 preguntas</p>
+      <h2 class="mt-4 text-2xl font-semibold leading-snug">Grado de Compromiso Biopsicosocial</h2>
+      <p class="mt-4 grow leading-relaxed text-muted">Selecciona una alternativa por pregunta y revisa tus respuestas. Su interpretación requiere orientación profesional.</p>
+      <Button href="/tests/compromiso-biopsicosocial" class="mt-8">Iniciar cuestionario</Button>
+    </article>
+    {['Alerta de Recaídas', 'Test de Seguimiento'].map((title) => <article class="flex min-w-0 flex-col items-start rounded-card border border-border p-6 sm:p-8">
+      <h2 class="text-2xl font-semibold leading-snug">{title}</h2>
+      <p class="mt-4 grow leading-relaxed text-muted">{title === "Alerta de Recaídas" ? "28 afirmaciones con siete alternativas de frecuencia. Responde y revisa tus selecciones." : "Cuestionario sobre tu experiencia después del egreso de CEADT, con revisión local de respuestas."}</p>
+      <Button href={title === "Alerta de Recaídas" ? "/tests/alerta-de-recaidas" : "/tests/seguimiento"} variant="outline" class="mt-8">Iniciar cuestionario</Button>
+    </article>)}
+  </Container>
+  <Footer slot="footer" />
+</BaseLayout>

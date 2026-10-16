@@ -1,0 +1,86 @@
+---
+interface SectionLink { id: string; label: string; }
+interface Props { sections: SectionLink[]; }
+const { sections } = Astro.props;
+const linkClass = 'block rounded-control border-l-2 border-transparent px-4 py-3 text-sm font-medium text-muted hover:bg-background-alt hover:text-primary aria-[current=location]:border-primary aria-[current=location]:bg-background-alt aria-[current=location]:font-semibold aria-[current=location]:text-primary';
+---
+<aside data-program-index class="program-index sticky z-10 self-start border-b border-border bg-surface lg:rounded-card lg:border lg:p-4">
+  <nav aria-label="Secciones del programa" class="hidden max-h-[calc(100svh-var(--site-header-height,6rem)-3rem)] overflow-y-auto lg:block">
+    <!-- <p class="mb-4 px-4 pt-2 text-xs font-semibold uppercase tracking-widest text-muted">En esta página</p> -->
+    <ul class="space-y-1">{sections.map((section, index) => <li><a data-section={section.id} href={`#${section.id}`} class={linkClass} aria-current={index === 0 ? 'location' : undefined}>{section.label}</a></li>)}</ul>
+  </nav>
+  <details data-mobile-index class="group relative lg:hidden">
+    <summary aria-controls="program-mobile-sections" class="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 px-4 py-3 sm:px-6">
+      <span class="min-w-0"><span class="block text-xs text-muted">En esta página</span><span data-current-section class="block text-sm font-semibold text-primary">{sections[0]?.label}</span></span>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="size-5 shrink-0 text-primary group-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
+    </summary>
+    <nav id="program-mobile-sections" aria-label="Secciones del programa en móvil" class="absolute inset-x-0 top-full max-h-[min(60svh,calc(100svh-var(--site-header-height,6rem)-5rem))] overflow-y-auto border-b border-border bg-surface p-3 shadow-card">
+      <ul class="space-y-1">{sections.map((section, index) => <li><a data-section={section.id} href={`#${section.id}`} class={linkClass} aria-current={index === 0 ? 'location' : undefined}>{section.label}</a></li>)}</ul>
+    </nav>
+  </details>
+</aside>
+<script>
+  const index = document.querySelector<HTMLElement>('[data-program-index]');
+  if (index) {
+    const links = [...index.querySelectorAll<HTMLAnchorElement>('a[data-section]')];
+    const mobile = index.querySelector<HTMLDetailsElement>('[data-mobile-index]');
+    const trigger = mobile?.querySelector('summary');
+    const label = index.querySelector<HTMLElement>('[data-current-section]');
+    const sections = [...new Set(links.map((link) => link.dataset.section))]
+      .map((id) => id ? document.getElementById(id) : null)
+      .filter((section): section is HTMLElement => section !== null);
+    const desktop = window.matchMedia('(min-width: 64rem)');
+    const activate = (id: string) => {
+      for (const link of links) {
+        if (link.dataset.section === id) {
+          link.setAttribute('aria-current', 'location');
+          if (label) label.textContent = link.textContent;
+        } else link.removeAttribute('aria-current');
+      }
+    };
+    const update = () => {
+      const headerHeight = document.getElementById('site-header')?.getBoundingClientRect().height ?? 0;
+      const offset = headerHeight + (desktop.matches ? 48 : index.getBoundingClientRect().height + 40);
+      let current = sections[0];
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= offset) current = section;
+      }
+      if (current) activate(current.id);
+    };
+    let scheduled = false;
+    const scheduleUpdate = () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(() => { scheduled = false; update(); });
+    };
+    for (const link of links) link.addEventListener('click', () => {
+      const target = document.getElementById(link.dataset.section ?? '');
+      if (mobile) mobile.open = false;
+      if (target) {
+        target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+        activate(target.id);
+      }
+    });
+    if (mobile && trigger) {
+      trigger.setAttribute('aria-expanded', String(mobile.open));
+      mobile.addEventListener('toggle', () => trigger.setAttribute('aria-expanded', String(mobile.open)));
+      mobile.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && mobile.open) { mobile.open = false; trigger.focus(); }
+      });
+      desktop.addEventListener('change', () => { mobile.open = false; scheduleUpdate(); });
+    }
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate, { passive: true });
+    window.addEventListener('hashchange', scheduleUpdate);
+    window.addEventListener('load', scheduleUpdate, { once: true });
+    update();
+  }
+</script>
+
+<style>
+  .program-index { top: var(--site-header-height, 6rem); }
+  @media (min-width: 64rem) {
+    .program-index { top: calc(var(--site-header-height, 6rem) + 1.5rem); }
+  }
+</style>

@@ -1,0 +1,22 @@
+---
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+---
+<section id="orientacion" aria-labelledby="access-title" class="py-16 sm:py-20 lg:py-28">
+  <Container class="grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+    <div>
+      <SectionHeading size="editorial" id="access-title" eyebrow="Cómo acceder" title="Tu consulta puede ser el primer paso" description="Un punto de contacto para consultar sobre ingreso o derivación." />
+      <p class="mt-6 text-lg leading-relaxed text-muted">Dirige tu consulta sobre ingreso o derivación a CEADT Hombres o CEADT Mujeres.</p>
+    </div>
+    <div class="rounded-card border border-border bg-background-alt p-8 sm:p-10">
+      <p class="text-sm font-semibold text-secondary">Orientación de contacto</p>
+      <h3 class="mt-3 text-2xl font-semibold">¿Por dónde comenzar?</h3>
+      <p class="mt-4 text-muted">Selecciona el centro al que deseas contactar.</p>
+      <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <Button href="#contacto-hombres" variant="secondary">CEADT Hombres</Button>
+        <Button href="#contacto-mujeres" variant="outline">CEADT Mujeres</Button>
+      </div>
+    </div>
+  </Container>
+</section>

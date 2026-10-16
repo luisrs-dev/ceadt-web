@@ -1,0 +1,37 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Container from '../components/ui/Container.astro';
+import { articles } from '../data/articles';
+const description = 'Material de lectura sobre adicciones, prevención, recuperación y salud mental.';
+---
+<BaseLayout title="Artículos" description={description}>
+  <Header slot="header" />
+  <PageHeader title="Artículos" description={description} breadcrumbs={[{ label: 'Inicio', href: '/' }, { label: 'Artículos' }]} />
+  <section aria-label="Artículos y material de lectura" class="py-16 sm:py-20 lg:py-24">
+    <Container>
+      <p class="mb-8 max-w-reading leading-relaxed text-muted">Los documentos PDF están pendientes de incorporación. Podrás descargarlos desde esta página cuando estén disponibles.</p>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        {articles.map((article) => <article aria-labelledby={`${article.id}-title`} class="flex min-w-0 flex-col overflow-hidden rounded-card border border-border bg-surface shadow-card">
+          <div class="flex h-52 items-center justify-center p-6">
+            <Image src={article.image} alt="" widths={[160, 320]} sizes="160px" format="webp" loading="lazy" class="h-40 w-40 object-contain" />
+          </div>
+          <div class="flex grow flex-col px-6 pb-6 text-center">
+            <h2 id={`${article.id}-title`} class="text-xl font-semibold leading-snug">{article.title}</h2>
+            <p class="mt-4 grow leading-relaxed text-muted">{article.description}</p>
+          </div>
+          <div class="border-t border-border p-4">
+            {article.pdfUrl ? <a href={article.pdfUrl} download class="inline-flex min-h-11 w-full items-center justify-center rounded-control bg-primary px-3 py-3 text-center text-sm font-semibold text-on-primary hover:bg-primary-hover">Descargar artículo (PDF)<span class="sr-only">: {article.title}</span></a> : <>
+              <button type="button" disabled aria-describedby={`${article.id}-status`} class="min-h-11 w-full cursor-not-allowed rounded-control border border-border bg-background-alt px-3 py-3 text-sm font-semibold text-muted">Descargar artículo<span class="sr-only">: {article.title}</span></button>
+              <p id={`${article.id}-status`} class="mt-2 text-center text-sm text-muted">PDF pendiente</p>
+            </>}
+          </div>
+        </article>)}
+      </div>
+    </Container>
+  </section>
+  <Footer slot="footer" />
+</BaseLayout>
