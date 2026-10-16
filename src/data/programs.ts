@@ -147,7 +147,7 @@ export const programs: Program[] = [
       objective: 'El programa busca desarrollar la responsabilidad personal y social y las herramientas de autocuidado a través de un proceso terapéutico acompañado.',
       stages: sharedStages,
       activities: [
-        { title: 'Terapéuticas', items: ['Acompañamiento profesional a nivel individual, familiar y grupal con Médico Psiquiatra, Psicóloga/o, Trabajador Social, Terapeuta Ocupacional, Técnico en Trabajo Social y Técnico en Enfermería'] },
+        { title: 'Terapéuticas', items: ['Acompañamiento profesional individual, familiar y grupal'] },
         { title: 'Recreativas', items: ['Juegos de mesa', 'Taca taca', 'Televisión', 'Lectura'] },
         { title: 'Actividades de agrado', items: ['Cine', 'Compartir', 'Música', 'Paseos'] },
         { title: 'Vinculación responsable con el medio', items: ['Rutina diaria', 'Incorporación en CESFAM y control de salud', 'Nivelación de estudios', 'Orientación judicial', 'Revinculación familiar', 'Vinculación laboral'] },
