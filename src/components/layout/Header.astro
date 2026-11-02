@@ -16,7 +16,14 @@ const currentPath = (base && (pathname === base || pathname.startsWith(`${base}/
     </a>
     <nav aria-label="Navegación principal" class="hidden xl:block">
       <ul class="flex flex-wrap items-center gap-5">
-        {publicNavigation.map((item) => <li><a href={item.href} aria-current={isNavigationActive(currentPath, item.href) ? 'page' : undefined} class:list={['inline-flex min-h-11 items-center gap-1 border-b-2 py-2 text-sm text-on-primary focus-visible:outline-on-primary', isNavigationActive(currentPath, item.href) ? 'border-accent font-semibold' : 'border-transparent hover:border-on-primary']}>{item.label}</a></li>)}
+        {publicNavigation.map((item) => <li>
+          {item.children ? <details data-program-menu class="relative">
+            <summary class:list={['inline-flex min-h-11 cursor-pointer list-none items-center gap-2 border-b-2 py-2 text-sm text-on-primary focus-visible:outline-on-primary', isNavigationActive(currentPath, item.href) ? 'border-accent font-semibold' : 'border-transparent hover:border-on-primary']}>{item.label}<span aria-hidden="true">⌄</span></summary>
+            <ul class="absolute left-0 top-full mt-2 w-60 rounded-control border border-border bg-surface p-2 text-primary shadow-card">
+              {item.children.map((child) => <li><a href={child.href} aria-current={currentPath === child.href ? 'page' : undefined} class:list={['flex min-h-11 items-center rounded-control px-4 py-3 text-sm hover:bg-background-alt', { 'bg-background-alt font-semibold': currentPath === child.href }]}>{child.label}</a></li>)}
+            </ul>
+          </details> : <a href={item.href} aria-current={currentPath === item.href ? 'page' : undefined} class:list={['inline-flex min-h-11 items-center gap-1 border-b-2 py-2 text-sm text-on-primary focus-visible:outline-on-primary', isNavigationActive(currentPath, item.href) ? 'border-accent font-semibold' : 'border-transparent hover:border-on-primary']}>{item.label}</a>}
+        </li>)}
       </ul>
     </nav>
     <div class="flex items-center gap-3">
@@ -27,6 +34,18 @@ const currentPath = (base && (pathname === base || pathname.startsWith(`${base}/
 </header>
 
 <script>
+  const programMenu = document.querySelector<HTMLDetailsElement>('[data-program-menu]');
+  if (programMenu) {
+    const summary = programMenu.querySelector('summary');
+    summary?.setAttribute('aria-expanded', String(programMenu.open));
+    programMenu.addEventListener('toggle', () => summary?.setAttribute('aria-expanded', String(programMenu.open)));
+    document.addEventListener('click', (event) => {
+      if (event.target instanceof Node && !programMenu.contains(event.target)) programMenu.open = false;
+    });
+    programMenu.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') { programMenu.open = false; summary?.focus(); }
+    });
+  }
   const header = document.getElementById('site-header');
   if (header) {
     const updateHeight = () => {

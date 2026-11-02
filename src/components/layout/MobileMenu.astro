@@ -9,7 +9,14 @@ const { currentPath } = Astro.props;
   </summary>
   <nav id="mobile-navigation" aria-label="Navegación móvil" class="absolute inset-x-0 top-full max-h-[calc(100svh-var(--site-header-height,6rem))] overflow-y-auto border-t border-on-primary/20 bg-primary p-4 shadow-card">
     <ul class="mx-auto grid max-w-content gap-1 sm:grid-cols-2">
-      {publicNavigation.map((item) => <li><a href={item.href} aria-current={isNavigationActive(currentPath, item.href) ? 'page' : undefined} class:list={['flex min-h-11 items-center justify-between gap-3 rounded-control px-4 py-3 text-on-primary hover:bg-primary-hover focus-visible:outline-on-primary', { 'bg-primary-hover font-semibold underline decoration-accent decoration-2 underline-offset-8': isNavigationActive(currentPath, item.href) }]}>{item.label}</a></li>)}
+      {publicNavigation.map((item) => <li>
+        {item.children ? <div class="rounded-control px-4 py-3">
+          <p class="font-semibold text-on-primary">{item.label}</p>
+          <ul class="mt-2 border-l border-on-primary/30 pl-3">
+            {item.children.map((child) => <li><a href={child.href} aria-current={currentPath === child.href ? 'page' : undefined} class:list={['flex min-h-11 items-center rounded-control px-3 py-3 text-on-primary hover:bg-primary-hover focus-visible:outline-on-primary', { 'bg-primary-hover font-semibold underline decoration-accent underline-offset-4': currentPath === child.href }]}>{child.label}</a></li>)}
+          </ul>
+        </div> : <a href={item.href} aria-current={currentPath === item.href ? 'page' : undefined} class:list={['flex min-h-11 items-center justify-between gap-3 rounded-control px-4 py-3 text-on-primary hover:bg-primary-hover focus-visible:outline-on-primary', { 'bg-primary-hover font-semibold underline decoration-accent decoration-2 underline-offset-8': isNavigationActive(currentPath, item.href) }]}>{item.label}</a>}
+      </li>)}
     </ul>
   </nav>
 </details>

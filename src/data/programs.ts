@@ -1,3 +1,6 @@
+import type { ImageMetadata } from 'astro';
+import menProgramImage from '../assets/programs/programa-hombres.jpg';
+import womenProgramImage from '../assets/programs/programa-mujeres.jpg';
 import { contacts, type Contact } from './contact';
 export interface ProgramStage { title: string; description: string; items: string[]; }
 export interface ProgramActivity { title: string; items: string[]; }
@@ -21,6 +24,8 @@ export interface ProgramAdmission {
 }
 export interface Program {
   slug: 'hombres' | 'mujeres';
+  image: ImageMetadata;
+  imageAlt: string;
   audience: string;
   title: string;
   description: string;
@@ -116,6 +121,7 @@ const sharedStages: ProgramStage[] = [
 /** Nombres y modalidad del sitio original; no se infieren prestaciones. */
 export const programs: Program[] = [
   {
+    image: menProgramImage, imageAlt: 'Grupo de hombres sonrientes formando un círculo y mirando hacia la cámara.',
     slug: 'hombres', audience: 'Hombres', title: 'Programa Residencial Hombres',
     description: 'Consulta al equipo de CEADT Hombres para conocer el programa.',
     introduction: 'El Programa Residencial Hombres forma parte de los programas de CEADT en tratamiento de adicciones. Para conocer más sobre el programa y consultar sobre ingreso o derivación, comunícate con CEADT Hombres.',
@@ -136,6 +142,7 @@ export const programs: Program[] = [
     },
   },
   {
+    image: womenProgramImage, imageAlt: 'Grupo de mujeres recostadas formando un círculo, vistas desde arriba.',
     slug: 'mujeres', audience: 'Mujeres', title: 'Programa Residencial Mujeres',
     description: 'Consulta al equipo de CEADT Mujeres para conocer el programa.',
     introduction: 'El Programa Residencial Mujeres es uno de los programas de CEADT en tratamiento de adicciones. CEADT Mujeres dispone de canales de contacto para realizar consultas sobre el programa, ingreso y derivaciones.',

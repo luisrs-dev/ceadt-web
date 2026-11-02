@@ -2,11 +2,15 @@ export interface NavigationItem {
   label: string;
   href: string;
   planned: boolean;
+  children?: { label: string; href: string }[];
 }
 export const navigation: NavigationItem[] = [
   { label: 'Inicio', href: '/', planned: false },
   { label: 'Nosotros', href: '/nosotros', planned: false },
-  { label: 'Programas', href: '/programas', planned: false },
+  { label: 'Programas', href: '/programas', planned: false, children: [
+    { label: 'Región del Maule', href: '/programas/maule' },
+    { label: 'Región del Biobío', href: '/programas/biobio' },
+  ] },
   { label: 'Tests', href: '/tests', planned: false },
   { label: 'Convenios', href: '/convenios', planned: false },
   { label: 'Noticias', href: '/noticias', planned: false },

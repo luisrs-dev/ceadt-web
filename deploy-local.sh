@@ -3,6 +3,8 @@ set -euo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REMOTE_ROOT=/home/repositories/ceadt
+# La publicación actual está bajo /ceadt/. Para el dominio definitivo usar CEADT_BASE_PATH=/.
+DEPLOY_BASE="${CEADT_BASE_PATH:-/ceadt}"
 BUILD_ONLY=false
 SSH_TARGET="${1:-}"
 
@@ -11,6 +13,7 @@ if [[ "$SSH_TARGET" == --build-only && $# -eq 1 ]]; then
 elif [[ $# -eq 0 || "$SSH_TARGET" == --help ]]; then
   echo "Uso: $0 usuario@host | --build-only"
   echo "Destino: $REMOTE_ROOT/dist (sitio estático)"
+  echo "Base: $DEPLOY_BASE (para publicar en la raíz: CEADT_BASE_PATH=/)"
   exit 0
 elif [[ $# -ne 1 || ! "$SSH_TARGET" =~ ^[a-zA-Z0-9_][a-zA-Z0-9_.-]*@[a-zA-Z0-9][a-zA-Z0-9.-]*$ ]]; then
   echo "Error: indica un único destino como usuario@host o usuario@IPv4." >&2
@@ -35,8 +38,9 @@ trap 'rm -rf -- "$BUILD_TMP"' EXIT
 
 cd "$PROJECT_DIR"
 echo "Validando y compilando CEADT en el equipo local..."
+echo "Base de publicación: $DEPLOY_BASE"
 pnpm check
-CEADT_BASE_PATH="${CEADT_BASE_PATH:-/}" pnpm build --outDir "$BUILD_TMP/dist"
+CEADT_BASE_PATH="$DEPLOY_BASE" pnpm build --outDir "$BUILD_TMP/dist"
 test -f "$BUILD_TMP/dist/index.html"
 test -d "$BUILD_TMP/dist/_astro"
 

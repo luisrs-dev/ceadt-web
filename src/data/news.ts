@@ -1,4 +1,6 @@
 import type { ImageMetadata } from 'astro';
+import biobio2026 from '../assets/news/senda-biobio-2026.jpeg';
+import rights2025 from '../assets/news/decalogo-2025.jpeg';
 import sendaMaule from '../assets/news/senda-maule.jpg';
 import directorVisit from '../assets/news/visita-director.jpg';
 import therapeuticDischarge from '../assets/news/20-personas.jpg';
@@ -10,13 +12,72 @@ export interface NewsArticle {
   title: string;
   publishedAt: string;
   summary: string;
-  image: ImageMetadata;
+  image?: ImageMetadata;
+  sourceUrl?: string;
+  imageCredit?: string;
   imageAlt: string;
   paragraphs: readonly string[];
   sections?: readonly { title: string; paragraphs: readonly string[] }[];
 }
 
 export const news: readonly NewsArticle[] = [
+  {
+    slug: "senda-biobio-inaugura-centro-tratamiento",
+    title: "SENDA Biobío inaugura un nuevo centro de tratamiento para fortalecer la red regional de rehabilitación",
+    publishedAt: "2026-04-01",
+    summary: "SENDA presentó en Concepción un centro ejecutado por CEADT, con atención ambulatoria intensiva y residencial para población adulta.",
+    imageAlt: "Personas sentadas escuchan a una expositora frente a pendones de SENDA y CEADT.",
+    sourceUrl: "https://www.senda.gob.cl/noticia/senda-biobio-inaugura-un-nuevo-centro-de-tratamiento-para-fortalecer-la-red-regional-de-rehabilitacion/",
+    image: biobio2026,
+    imageCredit: "SENDA",
+    paragraphs: [
+      "SENDA informó la inauguración de un centro especializado en Concepción, ejecutado por CEADT, para apoyar la recuperación de personas adultas con consumo problemático de alcohol y otras drogas.",
+      "La publicación describe una modalidad ambulatoria intensiva con 15 cupos mensuales para hombres y mujeres de Concepción, Chiguayante y San Pedro de la Paz, y una modalidad residencial masculina con 10 cupos mensuales de cobertura regional.",
+      "El centro cuenta con un equipo interdisciplinario que elabora planes de intervención individuales. La noticia destaca la experiencia previa de CEADT en el Maule y su ampliación al Biobío. Las condiciones y capacidades indicadas corresponden a la fecha de la publicación.",
+    ],
+  },
+  {
+    slug: "decalogo-derechos-recuperacion-2025",
+    title: "Presentan decálogo de derechos de personas en proceso de recuperación",
+    publishedAt: "2025-10-30",
+    summary: "SENDA presentó el decálogo de derechos en el centro residencial masculino CEADT durante las actividades del Mes de la Recuperación.",
+    imageAlt: "Participantes conversan alrededor de una mesa en una sala con paredes de ladrillo.",
+    sourceUrl: "https://www.senda.gob.cl/noticia/presentan-decalogo-de-derechos-de-personas-en-proceso-de-recuperacion/",
+    image: rights2025,
+    imageCredit: "SENDA",
+    paragraphs: [
+      "En el cierre del Mes de la Recuperación, la directora regional de SENDA, Ana María Rodríguez, participó en un conversatorio con personas del centro residencial masculino CEADT, ubicado en la comuna de Maule.",
+      "La actividad abordó el decálogo de derechos de personas usuarias de programas de recuperación. El documento reúne nueve derechos y un deber orientados a proteger la dignidad y los derechos humanos durante los procesos de tratamiento.",
+      "También se conversó sobre la audioserie “1412, Esto es sin Juzgar”, que presenta distintas experiencias relacionadas con el consumo y la recuperación. La jornada incluyó testimonios y reflexiones de las personas participantes.",
+    ],
+  },
+  {
+    slug: "decalogo-derechos-residencial-femenino-2024",
+    title: "En Centro de Tratamiento residencial femenino de Maule fue presentado decálogo de derechos de personas en recuperación",
+    publishedAt: "2024-11-13",
+    summary: "Usuarias del centro residencial femenino CEADT participaron en un conversatorio sobre derechos en los procesos de recuperación.",
+    imageAlt: "",
+    sourceUrl: "https://www.senda.gob.cl/noticia/en-centro-de-tratamiento-residencial-femenino-de-maule-fue-presentado-decalogo-de-derechos-de-personas-en-recuperacion/",
+    paragraphs: [
+      "SENDA Maule presentó el decálogo de derechos de personas usuarias de programas de recuperación en un conversatorio realizado en el centro residencial femenino CEADT.",
+      "Participaron autoridades regionales, integrantes del equipo profesional y diez usuarias. La actividad destacó que las personas en recuperación son titulares de derechos humanos y deben recibir una atención respetuosa de su dignidad.",
+      "Entre los temas abordados estuvieron el acceso a prestaciones de salud de calidad, la igualdad y no discriminación, y la protección de la privacidad y la confidencialidad. El instrumento busca orientar tanto la atención como la formación de los equipos de recuperación.",
+    ],
+  },
+  {
+    slug: "dia-internacional-mujer-ceadt-2023",
+    title: "Con usuarias de Centro de Tratamiento residencial SENDA Maule conmemora Día Internacional de la Mujer",
+    publishedAt: "2023-03-13",
+    summary: "SENDA conmemoró el Día Internacional de la Mujer con usuarias del centro residencial CEADT del sector de Colín.",
+    imageAlt: "",
+    sourceUrl: "https://www.senda.gob.cl/noticia/con-usuarias-de-centro-de-tratamiento-residencial-senda-maule-conmemora-dia-internacional-de-la-mujer/",
+    paragraphs: [
+      "Usuarias del centro residencial CEADT, ubicado en el sector de Colín, participaron en un encuentro de conmemoración del Día Internacional de la Mujer organizado por SENDA.",
+      "La actividad fue liderada por la directora regional subrogante de SENDA, Ana María Rodríguez, y la seremi de la Mujer y la Equidad de Género, Claudia Morales. Se abordaron la autonomía de las mujeres y el acompañamiento durante la recuperación.",
+      "Las participantes compartieron testimonios sobre sus procesos y la importancia de contar con oportunidades sin discriminación. SENDA reafirmó su compromiso con la recuperación y los proyectos de vida de las mujeres en tratamiento.",
+    ],
+  },
+
   {
     slug: 'senda-maule-centro-residencial-mujeres-talca',
     title: 'SENDA Maule cuenta con nuevo Centro de Tratamiento residencial para mujeres en las afueras de Talca',

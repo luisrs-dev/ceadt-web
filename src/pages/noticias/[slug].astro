@@ -36,7 +36,8 @@ const { article } = Astro.props;
         <p class="text-sm font-semibold text-secondary">Noticias · <time datetime={article.publishedAt}>{formatNewsDate(article.publishedAt)}</time></p>
         <h1 class="mt-4 text-3xl font-semibold leading-tight tracking-tight text-balance sm:text-4xl lg:text-5xl">{article.title}</h1>
       </header>
-      <Image src={article.image} alt={article.imageAlt} widths={[320, 400]} sizes="(min-width: 640px) 400px, calc(100vw - 32px)" format="webp" loading="eager" fetchpriority="high" class="mx-auto mt-10 h-auto w-full max-w-[400px] rounded-card" />
+      {article.image && <Image src={article.image} alt={article.imageAlt} widths={[320, 400]} sizes="(min-width: 640px) 400px, calc(100vw - 32px)" format="webp" loading="eager" fetchpriority="high" class="mx-auto mt-10 h-auto w-full max-w-[400px] rounded-card" />}
+      {article.imageCredit && <p class="mt-2 text-center text-sm text-muted">Imagen: {article.imageCredit}</p>}
       <p class="mt-8 border-l-2 border-secondary pl-4 text-sm leading-relaxed text-muted">Publicación del {formatNewsDate(article.publishedAt)}. La información corresponde a esa fecha.</p>
       <div class="mt-8 space-y-6 text-lg leading-relaxed">
         {article.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
@@ -45,6 +46,10 @@ const { article } = Astro.props;
           {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
         </section>)}
       </div>
+      {article.sourceUrl && <aside class="mt-10 rounded-card border border-border bg-background-alt p-6" aria-label="Fuente de la noticia">
+        <p class="text-sm text-muted">Síntesis de la publicación original de SENDA.</p>
+        <a href={article.sourceUrl} target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex min-h-11 items-center font-semibold text-primary underline underline-offset-4">Leer publicación original en SENDA ↗<span class="sr-only"> (se abre en otra pestaña)</span></a>
+      </aside>}
       <div class="mt-12 border-t border-border pt-8"><Button href="/noticias" variant="outline">← Volver a noticias</Button></div>
     </Container>
   </article>

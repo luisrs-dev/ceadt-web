@@ -1,0 +1,9 @@
+---
+import { programRegions } from '../../data/program-regions';
+---
+<div class="grid gap-4 md:grid-cols-2">
+  {programRegions.map((region) => <a href={`/programas/${region.id}`} class="group flex min-h-24 items-center justify-between gap-6 rounded-card border border-border bg-surface p-6 hover:border-primary sm:p-8">
+    <span><span class="block text-xs font-semibold uppercase tracking-widest text-muted">Programas CEADT</span><span class="mt-2 block text-xl font-semibold text-primary sm:text-2xl">{region.title}</span></span>
+    <span aria-hidden="true" class="text-2xl text-primary">→</span>
+  </a>)}
+</div>

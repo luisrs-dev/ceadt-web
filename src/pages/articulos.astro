@@ -13,7 +13,6 @@ const description = 'Material de lectura sobre adicciones, prevención, recupera
   <PageHeader title="Artículos" description={description} breadcrumbs={[{ label: 'Inicio', href: '/' }, { label: 'Artículos' }]} />
   <section aria-label="Artículos y material de lectura" class="py-16 sm:py-20 lg:py-24">
     <Container>
-      <p class="mb-8 max-w-reading leading-relaxed text-muted">Los documentos PDF están pendientes de incorporación. Podrás descargarlos desde esta página cuando estén disponibles.</p>
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {articles.map((article) => <article aria-labelledby={`${article.id}-title`} class="flex min-w-0 flex-col overflow-hidden rounded-card border border-border bg-surface shadow-card">
           <div class="flex h-52 items-center justify-center p-6">
@@ -25,8 +24,7 @@ const description = 'Material de lectura sobre adicciones, prevención, recupera
           </div>
           <div class="border-t border-border p-4">
             {article.pdfUrl ? <a href={article.pdfUrl} download class="inline-flex min-h-11 w-full items-center justify-center rounded-control bg-primary px-3 py-3 text-center text-sm font-semibold text-on-primary hover:bg-primary-hover">Descargar artículo (PDF)<span class="sr-only">: {article.title}</span></a> : <>
-              <button type="button" disabled aria-describedby={`${article.id}-status`} class="min-h-11 w-full cursor-not-allowed rounded-control border border-border bg-background-alt px-3 py-3 text-sm font-semibold text-muted">Descargar artículo<span class="sr-only">: {article.title}</span></button>
-              <p id={`${article.id}-status`} class="mt-2 text-center text-sm text-muted">PDF pendiente</p>
+              <button type="button" disabled class="min-h-11 w-full cursor-not-allowed rounded-control border border-border bg-background-alt px-3 py-3 text-sm font-semibold text-muted">Descargar artículo<span class="sr-only">: {article.title}</span></button>
             </>}
           </div>
         </article>)}

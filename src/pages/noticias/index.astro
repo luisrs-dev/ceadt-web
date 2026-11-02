@@ -6,7 +6,7 @@ import PageHeader from '../../components/layout/PageHeader.astro';
 import Container from '../../components/ui/Container.astro';
 import NewsCard from '../../components/news/NewsCard.astro';
 import { news } from '../../data/news';
-const articles = [...news].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+const articles = [...news].sort((a, b) => a.publishedAt.localeCompare(b.publishedAt));
 ---
 <BaseLayout title="Noticias" description="Noticias y publicaciones sobre las actividades de CEADT y su trabajo en el tratamiento de adicciones.">
   <Header slot="header" />

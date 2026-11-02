@@ -321,3 +321,27 @@ El usuario confirmó +56969186636 para el botón general de orientación. Se act
 ## Ubicaciones de contacto
 
 El usuario proporcionó los enlaces de Google Maps de CEADT Hombres (cid 2466325098543320171) y CEADT Mujeres (cid 16639876544803516152). Se incorporan bajo el correo de cada tarjeta de contacto. Se conserva el identificador de lugar y se omite el parámetro auxiliar g_mp. No se deducen direcciones postales ni se carga un mapa externo incrustado.
+
+## Actualización de misión y visión — 31 de octubre de 2026
+
+Se reemplazan misión y visión en `src/data/institutional.ts` por los nuevos textos proporcionados expresamente por el usuario, sin cambios de redacción. La página Nosotros utiliza estos datos compartidos.
+
+## Noticias del dossier SENDA — 31 de octubre de 2026
+
+Se revisó `CEADT_Noticias_SENDA_Con_Enlaces_e_Imagenes.docx`: cuatro publicaciones nuevas (2026, 2025, 2024 y 2023), una noticia de 2019 ya existente, cuatro titulares históricos ya incorporados y dos documentos complementarios que no son noticias. No se duplican registros ni se presentan contratos como noticias.
+
+Las cuatro páginas oficiales se consultaron directamente y se cotejaron las fechas. Se incorporan síntesis propias, sin copiar íntegramente las publicaciones, y enlace visible a la fuente original. Las imágenes del DOCX son fichas editoriales; no se usan como fotografías oficiales.
+
+Se descargaron e inspeccionaron las fotografías de SENDA para la inauguración del Biobío (https://www.senda.gob.cl/wp-content/uploads/2026/04/foto-encabezado.jpeg) y el decálogo de 2025 (https://www.senda.gob.cl/wp-content/uploads/2025/11/IMG_3121-1-1.jpeg). Se identifican como imágenes de SENDA, sin atribuir fotógrafo. Las páginas de 2024 y 2023 no expusieron fotografías de la noticia en el HTML consultado: se muestran tarjetas con «Imagen pendiente», sin sustituirlas por otras actividades. Las cifras y condiciones de los programas se mantienen dentro del contexto histórico del artículo, sin cambiar la información de los programas actuales.
+
+## Convenios UTalca y Santo Tomás — 31 de octubre de 2026
+
+Se agregan Universidad de Talca y Santo Tomás a solicitud expresa del usuario, con los logos locales `utalca-logo.jpg` y `logo-santo-tomas.png`. No se han proporcionado objetivos, condiciones, carreras participantes ni enlaces de los convenios: se identifica el contenido como pendiente sin inventar detalles. Se conserva la selección actual de las otras instituciones en el archivo de datos.
+
+### Redacción pública de los nuevos convenios
+
+Por indicación del usuario, las tarjetas de Universidad de Talca y Santo Tomás presentan una descripción breve que confirma la existencia del convenio. Se retiran los avisos públicos de contenido pendiente. No se especifican prestaciones, condiciones ni carreras participantes que no se hayan confirmado.
+
+## Fotografías de las tarjetas de programas — 31 de octubre de 2026
+
+El usuario entregó `programa-hombres.jpg` y `programa-mujeres.jpg` y confirmó que pueden utilizarse. Sustituyen el ícono de las tarjetas compartidas en Inicio y Programas. Se muestran completas con proporción cuadrada, sin identificar a las personas como pacientes ni afirmar que la escena corresponde a un tratamiento. Se optimizan mediante Astro con carga diferida y texto alternativo descriptivo.

@@ -7,8 +7,8 @@ export const institutional = {
     'Somos un centro especialista en tratamiento de adicciones en la Región del Maule. Acompañamos procesos de rehabilitación y reinserción social.',
     'Nuestro propósito es atender las necesidades de las personas usuarias y otras instituciones, con un servicio orientado a la calidad y la mejora continua.',
   ],
-  mission: 'Contribuir a la Región del Maule brindando atención especializada a personas con problemas de adicciones y apoyando su rehabilitación y reinserción social, mediante un servicio orientado a la calidad y la excelencia.',
-  vision: 'Ser un centro de rehabilitación de referencia regional, reconocido por instituciones, organizaciones, profesionales y personas usuarias por su excelencia, eficacia, confianza, cercanía y compromiso con la comunidad.',
+  mission: 'Otorgar atención especializada a usuarios con problemas de adicciones, aportar con su recuperación y reinserción social, brindando para ello un servicio de calidad y excelencia.',
+  vision: 'Ser un centro de rehabilitación de referencia, reconocido por otras organizaciones, profesionales y usuarios como una institución de salud de excelencia, confiable, cercana y comprometida con la comunidad.',
 } as const;
 
 export interface InstitutionalCommitment {

@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Container from '../../components/ui/Container.astro';
+import ProgramCard from '../../components/programs/ProgramCard.astro';
+import ProgramPreviewCard from '../../components/programs/ProgramPreviewCard.astro';
+import ProgramContact from '../../components/programs/ProgramContact.astro';
+import { programRegions, type ProgramRegion } from '../../data/program-regions';
+export function getStaticPaths() {
+  return programRegions.map((region) => ({ params: { region: region.id }, props: { region } }));
+}
+interface Props { region: ProgramRegion; }
+const { region } = Astro.props;
+const description = `Conoce los programas de CEADT en la ${region.title} y la información disponible para solicitar orientación.`;
+---
+<BaseLayout title={`Programas — ${region.title}`} description={description}>
+  <Header slot="header" />
+  <PageHeader title={`Programas en la ${region.title}`} description={region.description} breadcrumbs={[{ label: 'Inicio', href: '/' }, { label: 'Programas', href: '/programas' }, { label: region.title }]} />
+  <section aria-labelledby="region-programs-title" class="py-16 sm:py-20">
+    <Container>
+      <h2 id="region-programs-title" class="text-2xl font-semibold text-primary sm:text-3xl">Conoce nuestros programas</h2>
+      <p class="mt-5 max-w-reading text-sm leading-relaxed text-muted"><strong>Presentación preliminar.</strong> Los programas nuevos tienen información y distribución regional pendientes de validación.{region.id === 'maule' && ' También se debe confirmar si Hombres Curicó corresponde al programa de hombres existente.'}</p>
+      <div class="mt-10 grid gap-8 md:grid-cols-2">
+        {region.programs.map((program) => <ProgramCard program={program} />)}
+        {region.previews.map((program) => <ProgramPreviewCard program={program} />)}
+      </div>
+      <a href="/programas" class="mt-10 inline-flex min-h-11 items-center font-semibold text-primary underline underline-offset-4">Ver otras regiones</a>
+    </Container>
+  </section>
+  {region.programs.length > 0 && <section aria-labelledby="region-contact-title" class="bg-background-alt py-16 sm:py-20">
+    <Container>
+      <h2 id="region-contact-title" class="text-2xl font-semibold text-primary sm:text-3xl">Contactos disponibles</h2>
+      <p class="mt-4 text-muted">Los contactos de los nuevos programas se incorporarán una vez confirmados.</p>
+      <div class="mt-8 grid gap-8 md:grid-cols-2">{region.programs.map((program) => <ProgramContact contact={program.contact} level="h3" />)}</div>
+    </Container>
+  </section>}
+  <Footer slot="footer" />
+</BaseLayout>

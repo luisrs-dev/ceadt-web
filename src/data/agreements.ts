@@ -2,9 +2,8 @@ import type { ImageMetadata } from 'astro';
 import sendaLogo from '../assets/agreements/senda.jpg';
 import autonomaLogo from '../assets/agreements/universidad-autonoma.jpg';
 import inacapLogo from '../assets/agreements/inacap.jpg';
-import eligeLogo from '../assets/agreements/fundacion-elige.jpg';
-import mensalLogo from '../assets/agreements/mensal.jpg';
-import kayLogo from '../assets/agreements/kay.jpg';
+import utalcaLogo from '../assets/agreements/utalca-logo.jpg';
+import santoTomasLogo from '../assets/agreements/logo-santo-tomas.png';
 
 export interface Agreement {
   id: string;
@@ -36,20 +35,13 @@ export const agreements: Agreement[] = [
     website: { label: 'Sitio de INACAP', href: 'https://portales.inacap.cl/' },
   },
   {
-    id: 'fundacion-elige', logo: eligeLogo, name: 'Fundación Elige', category: 'Apoyo a personas y familias',
-    purpose: 'Colaboración alimentaria y apoyo comunitario',
-    description: 'Durante la pandemia de COVID-19 se estableció una colaboración con Fundación Elige, a través de Red de Alimentos, para canalizar insumos alimenticios hacia personas usuarias y familias afectadas por ese contexto.',
+    id: 'universidad-de-talca', logo: utalcaLogo, name: 'Universidad de Talca', category: 'Convenio institucional',
+    purpose: 'Convenio con Universidad de Talca',
+    description: 'CEADT cuenta con un convenio con la Universidad de Talca, como parte de sus vínculos de colaboración institucional.',
   },
   {
-    id: 'mensal', logo: mensalLogo, name: 'Mensal Centro de Salud', category: 'Salud y acceso',
-    purpose: 'Vinculación con atención de salud',
-    description: 'El acuerdo se orientó a facilitar el acceso de las personas usuarias y su entorno de apoyo a una red de atención de salud particular, para distintas necesidades de salud.',
-    website: { label: 'Sitio de Mensal', href: 'https://somosmensal.cl/' },
-  },
-  {
-    id: 'kay', logo: kayLogo, name: 'Kay Soluciones Informáticas', category: 'Gestión y tecnología',
-    purpose: 'Herramientas para el trabajo del equipo',
-    description: 'La colaboración permitió incorporar la ficha electrónica Kimün, con el propósito de digitalizar los registros y mejorar la gestión interna y el trabajo del equipo profesional.',
-    website: { label: 'Sitio de Kay', href: 'https://www.kay.cl/' },
+    id: 'santo-tomas', logo: santoTomasLogo, name: 'Santo Tomás', category: 'Convenio institucional',
+    purpose: 'Convenio con Santo Tomás',
+    description: 'CEADT cuenta con un convenio con Santo Tomás, como parte de sus vínculos de colaboración institucional.',
   },
 ];

@@ -28,6 +28,6 @@ Para Nginx, la raíz del sitio debe ser `/home/repositories/ceadt/dist`. Las rut
 CEADT_BASE_PATH=/ceadt ./deploy-local.sh root@31.97.9.216
 ```
 
-Astro usa la base indicada para sus recursos generados. La integración `scripts/base-path.mjs` completa las rutas locales escritas en HTML y CSS (navegación, imágenes públicas y fuentes), sin modificar enlaces externos o anclas. El encabezado normaliza la base para marcar el menú activo. Para un dominio en la raíz, omitir la variable o usar `/`.
+Astro usa la base indicada para sus recursos generados. La integración `scripts/base-path.mjs` completa las rutas locales escritas en HTML y CSS (navegación, imágenes públicas y fuentes), sin modificar enlaces externos o anclas. El encabezado normaliza la base para marcar el menú activo. El script de despliegue usa `/ceadt` de forma predeterminada. Para un dominio en la raíz, indicar explícitamente `CEADT_BASE_PATH=/`.
 
 En el VPS, las ubicaciones `/ceadt` y `/ceadt/` están dentro del bloque HTTP `server` de `default`; el alias apunta a `/home/repositories/ceadt/dist/`.
