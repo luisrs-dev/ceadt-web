@@ -1,0 +1,17 @@
+---
+import type { RegionalProgramGroup } from '../../data/program-regions';
+interface Props { groups: RegionalProgramGroup[]; }
+const { groups } = Astro.props;
+---
+<div class="space-y-10 sm:space-y-12">
+  {groups.map((group) => <section aria-labelledby={`program-group-${group.id}`}>
+    <h2 id={`program-group-${group.id}`} class="text-xl font-semibold text-primary sm:text-2xl">{group.title}</h2>
+    <ul class="mt-4 divide-y divide-border border-y border-border">
+      {group.programs.map((program) => <li class="flex min-w-0 flex-col items-start justify-between gap-3 py-5 sm:flex-row sm:items-center sm:gap-8 sm:py-6">
+        <h3 class="min-w-0 text-lg font-semibold leading-snug text-foreground">{program.title}</h3>
+        {program.href ? <a href={program.href} aria-label={`Ver ${program.title}`} class="inline-flex min-h-11 shrink-0 items-center gap-3 rounded-control py-2 font-semibold text-primary underline underline-offset-4 hover:text-primary-hover">Ver programa <span aria-hidden="true">→</span></a>
+          : <span class="inline-flex min-h-11 shrink-0 items-center text-sm text-muted">Información pendiente</span>}
+      </li>)}
+    </ul>
+  </section>)}
+</div>
